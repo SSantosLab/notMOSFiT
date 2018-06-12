@@ -1,0 +1,186 @@
+{
+    "ebv":{
+        "kind":"parameter",
+        "value":0.0,
+        "class":"parameter",
+        "inputs":[
+            "transient"
+        ],
+        "latex":"E({\\rm B} - {\\rm V})"
+    },
+    "fnickel":{
+        "kind":"parameter",
+        "value":1.0,
+        "class":"parameter",
+        "latex":"f_{\\rm Ni}"
+    },
+    "nhhost":{
+        "kind":"parameter",
+        "value":1.0e18,
+        "class":"parameter",
+        "latex":"n_{\\rm H,host}",
+        "derived_keys":"avhost"
+    },
+    "texplosion":{
+        "kind":"parameter",
+        "value":0.0,
+        "class":"parameter",
+        "latex":"t_{\\rm exp}\\,{\\rm (days)}",
+        "requests":{
+            "min_times": "transient"
+        }
+    },
+    "temperature":{
+        "kind":"parameter",
+        "value":1.0e4,
+        "class":"parameter",
+        "latex":"T_{\\min}\\,{\\rm (K)}"
+    },
+    "kappa":{
+        "kind":"parameter",
+        "value":0.2,
+        "class":"parameter",
+        "latex":"\\kappa\\,({\\rm cm}^{2}\\,{\\rm g}^{-1})"
+    },
+    "kappagamma":{
+        "kind":"parameter",
+        "value":10.0,
+        "class":"parameter",
+        "latex":"\\kappa_\\gamma\\,({\\rm cm}^{2}\\,{\\rm g}^{-1})"
+    },
+    "mejecta":{
+        "kind":"parameter",
+        "value":1.0,
+        "class":"parameter",
+        "latex":"M_{\\rm ej}\\,(M_\\odot)"
+    },
+    "vejecta":{
+        "kind":"parameter",
+        "value":1.0e4,
+        "class":"parameter",
+        "latex":"v_{\\rm ej}\\,({\\rm km\\,s}^{-1})"
+    },
+    "cutoff_wavelength":{
+        "kind":"parameter",
+        "value":3000.0,
+        "class":"parameter",
+        "latex":"\\lambda_{\\rm cutoff}"
+    },
+    "line_wavelength":{
+        "kind":"parameter",
+        "value":7.5e3,
+        "class":"parameter",
+        "latex":"g_{\\lambda}"
+    },
+    "line_width":{
+        "kind":"parameter",
+        "value":500.0,
+        "class":"parameter",
+        "latex":"g_{\\Delta \\lambda}"
+    },
+    "line_time":{
+        "kind":"parameter",
+        "value":50.0,
+        "class":"parameter",
+        "latex":"g_{t}"
+    },
+    "line_duration":{
+        "kind":"parameter",
+        "value":25.0,
+        "class":"parameter",
+        "latex":"g_{\\tau}"
+    },
+    "line_amplitude":{
+        "kind":"parameter",
+        "value":0.3,
+        "class":"parameter",
+        "latex":"g_{A}"
+    },
+    "nickelcobalt":{
+        "kind":"engine",
+        "inputs":[
+            "densetimes",
+            "mejecta",
+            "fnickel",
+            "texplosion"
+        ]
+    },
+    "diffusion":{
+        "kind":"transform",
+        "inputs":[
+            "nickelcobalt",
+            "kappa",
+            "kappagamma",
+            "mejecta",
+            "texplosion",
+            "vejecta"
+        ]
+    },
+    "temperature_floor":{
+        "kind":"photosphere",
+        "inputs":[
+            "texplosion",
+            "diffusion",
+            "temperature"
+        ]
+    },
+    "blackbody_cutoff":{
+        "kind":"sed",
+        "inputs":[
+            "texplosion",
+            "redshift",
+            "temperature_floor",
+            "cutoff_wavelength"
+        ],
+        "requests":{
+            "band_wave_ranges": "photometry"
+        }
+    },
+    "line":{
+        "kind":"sed",
+        "inputs":[
+            "blackbody_cutoff",
+            "redshift",
+            "line_wavelength",
+            "line_width",
+            "line_time",
+            "line_duration",
+            "line_amplitude"
+        ],
+        "requests":{
+            "band_wave_ranges": "photometry"
+        }
+    },
+    "ia_constraints":{
+        "kind":"constraint",
+        "inputs":[
+            "mejecta",
+            "vejecta",
+            "fnickel"
+        ]
+    },
+    "losextinction":{
+        "kind":"sed",
+        "inputs":[
+            "line",
+            "nhhost",
+            "rvhost",
+            "ebv"
+        ],
+        "requests":{
+            "band_wave_ranges": "photometry"
+        }
+    },
+    "photometry":{
+        "kind":"observable",
+        "supports":[
+            "ultraviolet",
+            "optical",
+            "infrared"
+        ],
+        "inputs":[
+            "losextinction",
+            "lumdist"
+        ]
+    }
+}
