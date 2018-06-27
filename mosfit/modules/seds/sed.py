@@ -24,6 +24,8 @@ class SED(Module):
         super(SED, self).__init__(**kwargs)
         self._N_PTS = 16 + 1
         self._sample_wavelengths = []
+	# Added this line to be able to pass in band_wave_ranges directly 
+	self._wave_ranges = kwargs['band_wave_ranges']	
 
     def receive_requests(self, **requests):
         """Receive requests from other ``Module`` objects."""
@@ -31,6 +33,8 @@ class SED(Module):
         if not self._sample_wavelengths:
             wave_ranges = requests.get('band_wave_ranges', [])
             if not wave_ranges:
+		wave_ranges = self._wave_ranges
+	    if not wave_ranges:
                 return
             max_len = 0
             for rng in wave_ranges:
