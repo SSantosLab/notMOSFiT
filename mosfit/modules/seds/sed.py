@@ -25,7 +25,10 @@ class SED(Module):
         self._N_PTS = 16 + 1
         self._sample_wavelengths = []
 	# Added this line to be able to pass in band_wave_ranges directly 
-	self._wave_ranges = kwargs['band_wave_ranges']	
+	# lol the line below breaks MOSFiT when you actually run it, so 
+	# uncomment it if trying to plot output of this module in a
+	# notebook, but otherwise, keep commented
+	#self._wave_ranges = kwargs['band_wave_ranges']	
 
     def receive_requests(self, **requests):
         """Receive requests from other ``Module`` objects."""
