@@ -4,7 +4,7 @@ import bisect
 import h5py
 import pickle
 from scipy.constants import h,k,c
-%matplotlib inline
+#%matplotlib inline
 
 '''
     Reformat Kasen SEDs 
@@ -45,14 +45,16 @@ pickle.dump(times, open(save_path + "times_days.p", "wb"))
 
 
 # Create correct dictionaries 
-path = '../Kasen_Kilonova_Models_2017/systematic_kilonova_model_grid/'
 for mi, m in enumerate(mass_s):
     for vi, v in enumerate(vk_s):
         for xi, x in enumerate(Xlan_s):
             # Read in files for each parameter
             # -----------------------------------------------------------------
-            fname = path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.h5'
-            print(fname)
+            fname = open_path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.h5'
+           
+	    print(fname)
+	    if fname == open_path + 'knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-1.0.h5':
+		continue
             fin    = h5py.File(fname,'r')
     
             data = {'mass': mass[mi],
