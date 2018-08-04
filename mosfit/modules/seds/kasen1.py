@@ -1,4 +1,4 @@
-"""Definitions for the `Lasen1` class."""
+"""Definitions for the `Kasen1` class."""
 import numpy as np
 from mosfit.modules.seds.sed import SED
 import pickle 
@@ -40,8 +40,8 @@ class Kasen1(SED):
 
         # Read in times and frequencies arrays (same for all SEDs)
 
-        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'frequency_angstroms.p'), "rb"))
-        kasen_times = pickle.load( open(os.path.join(self._dir_path, 'times_days.p'), "rb"))
+        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, '/kasen_seds/frequency_angstroms.p'), "rb"))
+        kasen_times = pickle.load( open(os.path.join(self._dir_path, '/kasen_seds/times_days.p'), "rb"))
 
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by

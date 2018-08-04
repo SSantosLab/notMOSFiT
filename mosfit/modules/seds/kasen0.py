@@ -40,8 +40,8 @@ class Kasen0(SED):
 
         # Read in times and frequencies arrays (same for all SEDs)
 
-        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'frequency_angstroms.p'), "rb"))
-        kasen_times = pickle.load( open(os.path.join(self._dir_path, 'times_days.p'), "rb"))
+        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, '/kasen_seds/frequency_angstroms.p'), "rb"))
+        kasen_times = pickle.load( open(os.path.join(self._dir_path, '/kasen_seds/times_days.p'), "rb"))
 
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
