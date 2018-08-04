@@ -84,7 +84,7 @@ class Kasen0(SED):
         x_closest = self.XLAN_S[(np.abs(self.XLAN-self._xlan)).argmin()]
 
         # Open nearest neighbor file
-        kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', "rb" ) ))
+        kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', ), "rb" ))
 
         # For each time
         for ti, t in enumerate(self._times):
