@@ -114,3 +114,4 @@ class Kasen0(SED):
         seds = self.add_to_existing_seds(seds, **kwargs)
 
         return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+
