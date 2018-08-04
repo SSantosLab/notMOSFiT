@@ -29,7 +29,6 @@ class Kasen1(SED):
     VKIN_S = np.array(['0.03', '0.05', '0.10', '0.20', '0.30'])
     XLAN_S = np.array(['1e-1', '1e-2', '1e-3', '1e-4', '1e-5', '1e-9'])
 
-    open_path = "./kasen_seds/"
 
     C_CONST = c.c.cgs.value
 
@@ -38,12 +37,16 @@ class Kasen1(SED):
 
         # Read in times and frequencies arrays (same for all SEDs)
 
+	 open_path = "./kasen_seds/"
+
         kasen_frequencies = pickle.load( open( open_path + "frequency_angstroms.p" , "rb" ) )
         kasen_times = pickle.load( open( open_path + "times_days.p", "rb") )
 
 
     def process(self, **kwargs):
-        # Physical parameters from Kasen simulations, provided by
+        open_path = "./kasen_seds/"
+
+	# Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
         self._vk = kwargs['vk']
         self._xlan = kwargs['xlan']
