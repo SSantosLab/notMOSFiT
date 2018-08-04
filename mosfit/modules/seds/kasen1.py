@@ -37,7 +37,7 @@ class Kasen1(SED):
 
         # Read in times and frequencies arrays (same for all SEDs)
 
-	 open_path = "./kasen_seds/"
+	open_path = "./kasen_seds/"
 
         kasen_frequencies = pickle.load( open( open_path + "frequency_angstroms.p" , "rb" ) )
         kasen_times = pickle.load( open( open_path + "times_days.p", "rb") )

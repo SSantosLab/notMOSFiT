@@ -44,7 +44,7 @@ class Kasen0(SED):
 
 
     def process(self, **kwargs):
-	 open_path = "./kasen_seds/"
+	open_path = "./kasen_seds/"
 	  
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
