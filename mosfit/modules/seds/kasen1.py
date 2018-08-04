@@ -1,9 +1,10 @@
-"""Definitions for the `Blackbody` class."""
+"""Definitions for the `Lasen1` class."""
 import numpy as np
 from mosfit.modules.seds.sed import SED
 import pickle 
 from astropy import constants as c
 from astropy import units as u
+import os
 
 
 
@@ -12,9 +13,9 @@ from astropy import units as u
 
 class Kasen1(SED):
     '''
-	Defining the Kasen-simulation based SED
+    Defining the Kasen-simulation based SED
 
-    FOR TYPE 1 == TIDAL TAIL EJECTA
+    FOR TYPE 0 == SHOCK HEATED EJECTA
     #Frankencode
     Kamile Lukosiute August 2018
     What is my life
@@ -29,18 +30,18 @@ class Kasen1(SED):
     VKIN_S = np.array(['0.03', '0.05', '0.10', '0.20', '0.30'])
     XLAN_S = np.array(['1e-1', '1e-2', '1e-3', '1e-4', '1e-5', '1e-9'])
 
-    open_path = "./kasen_seds/"
-
     C_CONST = c.c.cgs.value
 
     def __init__(self, **kwargs):
         super(Kasen1, self).__init__(**kwargs)
 
+
+        self._dir_path = os.path.dirname(os.path.realpath(__file__))
+
         # Read in times and frequencies arrays (same for all SEDs)
 
-        kasen_frequencies = pickle.load( open( open_path + "frequency_angstroms.p" , "rb" ) )
-        kasen_times = pickle.load( open( open_path + "times_days.p", "rb") )
-
+        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'frequency_angstroms.p'), "rb"))
+        kasen_times = pickle.load( open(os.path.join(self._dir_path, 'times_days.p'), "rb"))
 
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
@@ -66,7 +67,6 @@ class Kasen1(SED):
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * (1. - weight_goem)
 
-
         # Some temp vars for speed.
         cc = self.C_CONST
 
@@ -84,7 +84,7 @@ class Kasen1(SED):
         x_closest = XLAN_S[(np.abs(XLAN-self._xlan)).argmin()]
 
         # Open nearest neighbor file
-        kasen_seds = pickle.load( open( save_path + 'knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', "rb" ) )
+        kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', "rb" ) ))
 
         # For each time
         for ti, t in enumerate(self._times):
