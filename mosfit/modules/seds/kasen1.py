@@ -79,9 +79,9 @@ class Kasen1(SED):
         rest_wavs_dict = {}
 
         # Find nearest neighbors to the Kasen-calculated simulation
-        m_closest = MASS_S[(np.abs(MASS-self._mass)).argmin()]
-        v_closest = VKIN_S[(np.abs(VKIN-self._vk)).argmin()]
-        x_closest = XLAN_S[(np.abs(XLAN-self._xlan)).argmin()]
+        m_closest = self.MASS_S[(np.abs(self.MASS-self._mass)).argmin()]
+        v_closest = self.VKIN_S[(np.abs(self.VKIN-self._vk)).argmin()]
+        x_closest = self.XLAN_S[(np.abs(self.XLAN-self._xlan)).argmin()]
 
         # Open nearest neighbor file
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', "rb" ) ))
