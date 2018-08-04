@@ -1,4 +1,4 @@
-tions for the `Lasen1` class."""
+"""Definitions for the `Lasen1` class."""
 import numpy as np
 from mosfit.modules.seds.sed import SED
 import pickle 
