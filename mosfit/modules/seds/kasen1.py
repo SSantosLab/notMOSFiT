@@ -59,6 +59,8 @@ class Kasen0(SED):
 
         # Get times + other important things
         self._times = kwargs[self.key('dense_times')]
+        luminosities = np.zeros_like(self._times)
+
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
@@ -117,5 +119,5 @@ class Kasen0(SED):
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,  self.dense_key('luminosities'): luminosities}
 
