@@ -90,7 +90,7 @@ class Kasen0(SED):
         for ti, t in enumerate(self._times):
 
             # Find index of closest time: this is the SED we will pull 
-            t_closest_i = (np.abs(kasen_times-t)).argmin()
+            t_closest_i = (np.abs(self.kasen_times-t)).argmin()
 
             # Create a rest-frame wavelength array (tbh I don't know how this
             # works, but I can venture a guess that this more or less right)
@@ -106,7 +106,7 @@ class Kasen0(SED):
             sed = np.array([])
             for w in rest_wavs:
                 # find index of closest wav
-                w_closest_i = np.abs(kasen_frequencies-w).argmin()
+                w_closest_i = np.abs(self.kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
 
