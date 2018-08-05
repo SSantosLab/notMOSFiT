@@ -40,8 +40,8 @@ class Kasen0(SED):
 
         # Read in times and frequencies arrays (same for all SEDs)
 
-        kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
-        kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
+        self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
+        self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
@@ -90,7 +90,7 @@ class Kasen0(SED):
         for ti, t in enumerate(self._times):
 
             # Find index of closest time: this is the SED we will pull 
-            t_closest_i = (np.abs(self.kasen_times-t)).argmin()
+            t_closest_i = (np.abs(self._kasen_times-t)).argmin()
 
             # Create a rest-frame wavelength array (tbh I don't know how this
             # works, but I can venture a guess that this more or less right)
@@ -106,7 +106,7 @@ class Kasen0(SED):
             sed = np.array([])
             for w in rest_wavs:
                 # find index of closest wav
-                w_closest_i = np.abs(self.kasen_frequencies-w).argmin()
+                w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
 
