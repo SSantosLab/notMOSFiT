@@ -42,8 +42,6 @@ class Kasen0(SED):
 
         self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
-	self._times = kwargs[self.key('dense_times')]
-	luminosities = np.zeros_like(self._times)
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
@@ -57,6 +55,10 @@ class Kasen0(SED):
         # viewing angle and opening angle 
         self._phi = kwargs[self.key('phi')]
         self._theta = kwargs[self.key('theta')]
+
+        self._times = kwargs[self.key('dense_times')]
+        luminosities = np.zeros_like(self._times)
+
 
         # Get times + other important things
         self._times = kwargs[self.key('dense_times')]

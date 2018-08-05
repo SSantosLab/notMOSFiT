@@ -155,7 +155,7 @@
         "kind":"observable",
         "supports":[
             "ultraviolet",
-            "optical",
+	    "optical",
             "infrared"
         ],
         "inputs":[
