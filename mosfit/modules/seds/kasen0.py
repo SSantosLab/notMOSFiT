@@ -42,7 +42,8 @@ class Kasen0(SED):
 
         self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
-
+	self._times = kwargs[self.key('dense_times')]
+	luminosities = np.zeros_like(self._times)
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
@@ -116,5 +117,5 @@ class Kasen0(SED):
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, self.dense_key('luminosities'): luminosities}
 

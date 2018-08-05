@@ -7,6 +7,22 @@
             "bibcode": "2017arXiv171011576V"
         }
     ],
+   "ebv":{
+        "kind":"parameter",
+        "value":0.0,
+        "class":"parameter",
+        "inputs":[
+            "transient"
+        ],
+        "latex":"E({\\rm B} - {\\rm V})"
+    },
+    "nhhost":{
+        "kind":"parameter",
+        "value":1.0e14,
+        "class":"parameter",
+        "latex":"n_{\\rm H,host}",
+        "derived_keys":"avhost"
+    },
     "redshift":{
         "kind":"parameter",
         "value":0.009727,
@@ -91,6 +107,7 @@
     "kasen0":{
         "kind":"sed",
         "inputs":[
+	    "densetimes",
             "texplosion",
             "redshift",
             "vk0",
@@ -104,7 +121,7 @@
             "band_wave_ranges": "photometry"
         },
         "replacements":{
-            "vk0":"vk",
+            "vk":"vk0",
             "xlan":"xlan0",
             "mejecta":"mejecta0",
             "mass_weight":"mass_weight0"
@@ -113,6 +130,7 @@
     "kasen1":{
         "kind":"sed",
         "inputs":[
+      	    "densetimes",
             "texplosion",
             "redshift",
             "vk1",
@@ -143,9 +161,6 @@
         "inputs":[
             "kasen1",
             "lumdist"
-        ],
-        "replacements":{
-            "luminosities":"luminosities_blue"
-        }
-    }
+        ]
 }
+    }
