@@ -46,16 +46,16 @@ class Kasen0(SED):
     def process(self, **kwargs):
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
-        self._vk = kwargs['vk']
-        self._xlan = kwargs['xlan']
-        self._mass = kwargs['mejecta']
-
+        self._vk = kwargs[self.key('vk')]
+        self._xlan = kwargs[self.key('xlan')]
+        self._mass = kwargs[self.key('mejecta')]
+        
         # mass fractional weight provided by neutrinoshere module
-        self._mass_weight = kwargs['mass_weight']
-
+        self._mass_weight = kwargs[self.key('mass_weight')]
+        
         # viewing angle and opening angle 
-        self._phi = kwargs['phi']
-        self._theta = kwargs['theta']
+        self._phi = kwargs[self.key('phi')]
+        self._theta = kwargs[self.key('theta')]
 
         # Get times + other important things
         self._times = kwargs[self.key('dense_times')]
