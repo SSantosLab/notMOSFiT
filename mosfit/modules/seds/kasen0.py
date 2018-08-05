@@ -71,7 +71,7 @@ class Kasen0(SED):
         cc = self.C_CONST
 
         zp1 = 1.0 + kwargs[self.key('redshift')]
-        Azp1 = u.Angstrom.cgs.scale / zp1
+       # Azp1 = u.Angstrom.cgs.scale / zp1
         czp1 = cc / zp1
 
 
@@ -88,7 +88,7 @@ class Kasen0(SED):
 
         # For each time
         for ti, t in enumerate(self._times):
-
+	    print("time" + str(t))
             # Find index of closest time: this is the SED we will pull 
             t_closest_i = (np.abs(self._kasen_times-t)).argmin()
 
@@ -97,7 +97,7 @@ class Kasen0(SED):
             bi = self._band_indices[ti]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1)
+                    bi, self._sample_wavelengths[bi] * 10.)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[ti]])
@@ -109,7 +109,7 @@ class Kasen0(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-
+		print(t_closest_i, w_closest_i)
             seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
         

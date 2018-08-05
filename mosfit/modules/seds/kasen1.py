@@ -1,7 +1,7 @@
 """Definitions for the `Kasen1` class."""
 import numpy as np
 from mosfit.modules.seds.sed import SED
-import pickle 
+import pickle
 from astropy import constants as c
 from astropy import units as u
 import os
@@ -11,11 +11,11 @@ import os
 # Important: Only define one ``Module`` class per file.
 
 
-class Kasen1(SED):
+class Kasen0(SED):
     '''
-    Defining the Kasen-simulation based SED
+        Defining the Kasen-simulation based SED
 
-    FOR TYPE 0 == SHOCK HEATED EJECTA
+    FOR TYPE 1 == TIDAL TAIL
     #Frankencode
     Kamile Lukosiute August 2018
     What is my life
@@ -33,7 +33,7 @@ class Kasen1(SED):
     C_CONST = c.c.cgs.value
 
     def __init__(self, **kwargs):
-        super(Kasen1, self).__init__(**kwargs)
+        super(Kasen0, self).__init__(**kwargs)
 
 
         self._dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -49,10 +49,10 @@ class Kasen1(SED):
         self._vk = kwargs['vk']
         self._xlan = kwargs['xlan']
         self._mass = kwargs['mejecta']
-        
+
         # mass fractional weight provided by neutrinoshere module
         self._mass_weight = kwargs['mass_weight']
-        
+
         # viewing angle and opening angle 
         self._phi = kwargs['phi']
         self._theta = kwargs['theta']
@@ -67,11 +67,12 @@ class Kasen1(SED):
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * (1. - weight_goem)
 
+
         # Some temp vars for speed.
         cc = self.C_CONST
 
         zp1 = 1.0 + kwargs[self.key('redshift')]
-        Azp1 = u.Angstrom.cgs.scale / zp1
+       # Azp1 = u.Angstrom.cgs.scale / zp1
         czp1 = cc / zp1
 
 
@@ -84,11 +85,11 @@ class Kasen1(SED):
         x_closest = self.XLAN_S[(np.abs(self.XLAN-self._xlan)).argmin()]
 
         # Open nearest neighbor file
-        kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p'), "rb" ))
+        kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', ), "rb" ))
 
         # For each time
         for ti, t in enumerate(self._times):
-
+            print("time" + str(t))
             # Find index of closest time: this is the SED we will pull 
             t_closest_i = (np.abs(self._kasen_times-t)).argmin()
 
@@ -97,7 +98,7 @@ class Kasen1(SED):
             bi = self._band_indices[ti]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1)
+                    bi, self._sample_wavelengths[bi] * 10.)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[ti]])
@@ -109,10 +110,11 @@ class Kasen1(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-
+                print(t_closest_i, w_closest_i)
             seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
-            
+
+
         seds = self.add_to_existing_seds(seds, **kwargs)
 
         return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
