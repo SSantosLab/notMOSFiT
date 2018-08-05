@@ -93,10 +93,10 @@
         "inputs":[
             "texplosion",
             "redshift",
-            "vk",
-            "xlan",
-            "mejecta",
-            "mass_weight"
+            "vk0",
+            "xlan0",
+            "mejecta0",
+            "mass_weight0",
             "theta",
             "phi"
         ],
@@ -104,7 +104,7 @@
             "band_wave_ranges": "photometry"
         },
         "replacements":{
-            "vk":"vk0",
+            "vk0":"vk",
             "xlan":"xlan0",
             "mejecta":"mejecta0",
             "mass_weight":"mass_weight0"
@@ -115,10 +115,10 @@
         "inputs":[
             "texplosion",
             "redshift",
-            "vk",
-            "xlan",
-            "mejecta",
-            "mass_weight"
+            "vk1",
+            "xlan1",
+            "mejecta1",
+            "mass_weight1",
             "theta",
             "phi",
             "kasen0"
