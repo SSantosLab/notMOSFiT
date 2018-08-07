@@ -1,7 +1,7 @@
 """Definitions for the `Kasen1` class."""
 import numpy as np
 from mosfit.modules.seds.sed import SED
-import pickle
+import pickle 
 from astropy import constants as c
 from astropy import units as u
 import os
@@ -13,13 +13,14 @@ import os
 
 class Kasen1(SED):
     '''
-        Defining the Kasen-simulation based SED
+    Defining the Kasen-simulation based SED
 
     FOR TYPE 1 == TIDAL TAIL
     #Frankencode
     Kamile Lukosiute August 2018
     What is my life
     '''
+
 
     # Kasen-calculated parameters
     MASS = np.array([.001, .0025, .005, .01, .02, .025, .03, .04, .05, .075, .1])
@@ -35,15 +36,20 @@ class Kasen1(SED):
     def __init__(self, **kwargs):
         super(Kasen1, self).__init__(**kwargs)
 
-
-        self._dir_path = os.path.dirname(os.path.realpath(__file__))
-
         # Read in times and frequencies arrays (same for all SEDs)
-
+        self._dir_path = os.path.dirname(os.path.realpath(__file__))
         self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
     def process(self, **kwargs):
+        lum_key = self.key('luminosities')
+        kwargs = self.prepare_input(lum_key, **kwargs)
+        self._luminosities = kwargs[lum_key]
+        self._times = kwargs[self.key('dense_times')]
+        self._band_indices = kwargs['all_band_indices']
+        self._frequencies = kwargs['all_frequencies']
+
+
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
         self._vk = kwargs[self.key('vk')]
@@ -57,27 +63,16 @@ class Kasen1(SED):
         self._phi = kwargs[self.key('phi')]
         self._theta = kwargs[self.key('theta')]
 
-	self._times = kwargs[self.key('dense_times')]
-        dense_luminosities = np.zeros_like(self._times)
-
-        # Get times + other important things
-        self._all_times = kwargs[self.key('observation_types')]
-        luminosities = np.zeros_like(self._all_times)
-
-        self._band_indices = kwargs['all_band_indices']
-        self._frequencies = kwargs['all_frequencies']
-
         # Total weight function
         # TYPE 1 == TIDAL TAIL SO GEOMETRIC FACTOR IS 1 - geometrical_weight
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * (1. - weight_goem)
 
-
         # Some temp vars for speed.
         cc = self.C_CONST
-
         zp1 = 1.0 + kwargs[self.key('redshift')]
-       # Azp1 = u.Angstrom.cgs.scale / zp1
+        Azp1 = u.Angstrom.cgs.scale / zp1
+
         czp1 = cc / zp1
 
 
@@ -92,21 +87,19 @@ class Kasen1(SED):
         # Open nearest neighbor file
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p', ), "rb" ))
 
-        # For each time
-        for ti, t in enumerate(self._times):
-            #print("time" + str(t))
-            # Find index of closest time: this is the SED we will pull 
-            t_closest_i = (np.abs(self._kasen_times-t)).argmin()
-
-            # Create a rest-frame wavelength array (tbh I don't know how this
-            # works, but I can venture a guess that this more or less right)
-            bi = self._band_indices[ti]
+        # For each time (luminosities as proxy)
+        for li, lum in enumerate(self._luminosities):
+            bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * 10.)
+                    bi, self._sample_wavelengths[bi] * Azp1)
+                # bi, self._sample_wavelengths[bi] * 10.)
             else:
                 rest_wavs = np.array(  # noqa: F841
-                    [czp1 / self._frequencies[ti]])
+                    [czp1 / self._frequencies[li]])
+
+            # Find corresponding closest time
+            t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
             sed = np.array([])
@@ -115,12 +108,11 @@ class Kasen1(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-               # print(t_closest_i, w_closest_i)
+        #print(t_closest_i, w_closest_i)
             seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
-
+        
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, self.dense_key('luminosities'): dense_luminosities, self.key('luminosities'):luminosities}
-
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}

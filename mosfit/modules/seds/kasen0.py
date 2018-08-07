@@ -89,6 +89,7 @@ class Kasen0(SED):
 
         # For each time (luminosities as proxy)
         for li, lum in enumerate(self._luminosities):
+            bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
                     bi, self._sample_wavelengths[bi] * Azp1)
