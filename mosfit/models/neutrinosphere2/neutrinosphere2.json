@@ -104,10 +104,14 @@
         "class":"parameter",
         "latex":"m_w"
     },
+    "fakelum":{
+        "kind":"engine",
+        "inputs": "densetimes"
+    },
     "kasen0":{
         "kind":"sed",
         "inputs":[
-	    "densetimes",
+	        "fakelum",
             "texplosion",
             "redshift",
             "vk0",
@@ -130,7 +134,7 @@
     "kasen1":{
         "kind":"sed",
         "inputs":[
-      	    "densetimes",
+      	    "fakelum",
             "texplosion",
             "redshift",
             "vk1",
@@ -155,7 +159,7 @@
         "kind":"observable",
         "supports":[
             "ultraviolet",
-	    "optical",
+	         "optical",
             "infrared"
         ],
         "inputs":[

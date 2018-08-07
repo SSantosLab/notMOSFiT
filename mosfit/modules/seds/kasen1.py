@@ -11,7 +11,7 @@ import os
 # Important: Only define one ``Module`` class per file.
 
 
-class Kasen0(SED):
+class Kasen1(SED):
     '''
         Defining the Kasen-simulation based SED
 
@@ -33,7 +33,7 @@ class Kasen0(SED):
     C_CONST = c.c.cgs.value
 
     def __init__(self, **kwargs):
-        super(Kasen0, self).__init__(**kwargs)
+        super(Kasen1, self).__init__(**kwargs)
 
 
         self._dir_path = os.path.dirname(os.path.realpath(__file__))
