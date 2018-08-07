@@ -57,12 +57,13 @@ class Kasen0(SED):
         self._theta = kwargs[self.key('theta')]
 
         self._times = kwargs[self.key('dense_times')]
-        luminosities = np.zeros_like(self._times)
-
-
+        dense_luminosities = np.zeros_like(self._times)
+		
         # Get times + other important things
-        self._times = kwargs[self.key('dense_times')]
-        self._band_indices = kwargs['all_band_indices']
+        self._all_times = kwargs[self.key('times')]
+	luminosities = np.zeros_like(self._all_times)	
+
+	self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
         # Total weight function
@@ -112,12 +113,12 @@ class Kasen0(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-		print(t_closest_i, w_closest_i)
+		#print(t_closest_i, w_closest_i)
             seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
         
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, self.dense_key('luminosities'): luminosities}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, self.dense_key('luminosities'): dense_luminosities, self.key('luminosities'):luminosities}
 

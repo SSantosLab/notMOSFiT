@@ -57,9 +57,12 @@ class Kasen0(SED):
         self._phi = kwargs[self.key('phi')]
         self._theta = kwargs[self.key('theta')]
 
+	self._times = kwargs[self.key('dense_times')]
+        dense_luminosities = np.zeros_like(self._times)
+
         # Get times + other important things
-        self._times = kwargs[self.key('dense_times')]
-        luminosities = np.zeros_like(self._times)
+        self._all_times = kwargs[self.key('observation_types')]
+        luminosities = np.zeros_like(self._all_times)
 
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
@@ -91,7 +94,7 @@ class Kasen0(SED):
 
         # For each time
         for ti, t in enumerate(self._times):
-            print("time" + str(t))
+            #print("time" + str(t))
             # Find index of closest time: this is the SED we will pull 
             t_closest_i = (np.abs(self._kasen_times-t)).argmin()
 
@@ -112,12 +115,12 @@ class Kasen0(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-                print(t_closest_i, w_closest_i)
+               # print(t_closest_i, w_closest_i)
             seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
 
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,  self.dense_key('luminosities'): luminosities}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, self.dense_key('luminosities'): dense_luminosities, self.key('luminosities'):luminosities}
 

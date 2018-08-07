@@ -413,6 +413,7 @@ class Photometry(Module):
         nbs = np.logical_or(
             self._observation_types == 'countrate',
             self._observation_types == 'fluxdensity')
+	print(nbs)
         ybs = np.logical_or(
             self._observation_types == 'magnitude',
             self._observation_types == 'magcount')
