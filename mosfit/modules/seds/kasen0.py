@@ -49,7 +49,7 @@ class Kasen0(SED):
         times_key = self.key('times_to_proc')
         kwargs = self.prepare_input(times_key, **kwargs)
         self._times = kwargs[times_key]
-        self._dense_times = kwargs[self.key(dense_times)]
+        self._dense_times = kwargs[self.key('dense_times')]
         print(len(self._times))
         print(len(self._luminosities))
         '''
