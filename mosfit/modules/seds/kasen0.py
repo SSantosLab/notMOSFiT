@@ -44,7 +44,8 @@ class Kasen0(SED):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
-        self._times = kwargs[self.key('dense_times')]
+        self._dense_times = kwargs[self.key('dense_times')]
+        self._times = kwargs[self.key('times')]
         self._rest_times = kwargs[self.key('rest_times')]
         self._indices = kwargs[self.key('dense_indices')]
         '''
@@ -56,9 +57,14 @@ class Kasen0(SED):
             in the dense_lums array that time corresponds to... 
             18:02 EST 2018.08.07
         '''
-        print('dense times')
+        print('times')
         print(self._times)
         print(self._times.shape)
+        print('dense_times')
+        print(self._dense_times)
+        print(self._dense_times.shape)
+
+
         print('lums')
         print(self._luminosities.shape)
         print('indices')
