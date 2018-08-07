@@ -1,6 +1,7 @@
 """Definitions for the `FakeLum` class."""
 
 # Important: Only define one ``Module`` class per file.
+from mosfit.modules.engines.engine import Engine
 
 
 class FakeLum(Engine):
