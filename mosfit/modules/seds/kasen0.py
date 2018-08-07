@@ -72,7 +72,6 @@ class Kasen0(SED):
 
         zp1 = 1.0 + kwargs[self.key('redshift')]
         Azp1 = u.Angstrom.cgs.scale / zp1
-
         czp1 = cc / zp1
 
 
@@ -99,6 +98,7 @@ class Kasen0(SED):
                     [czp1 / self._frequencies[li]])
 
             # Find corresponding closest time
+            print(self._times[li])
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
