@@ -20,6 +20,15 @@ class FakeLum(Engine):
     def process(self, **kwargs):
 
         self._times = kwargs[self.key('dense_times')]
-        luminosities = [ 0.0 for t in self._times]
+        self._rest_texplosion = kwargs[self.key('resttexplosion')]
+
+        ts = [
+            np.inf
+            if self._rest_texplosion > x else (x - self._rest_texplosion)
+            for x in self._times
+        ]
+
+
+        luminosities = [ 0.0 for t in ts]
         
         return {self.dense_key('luminosities'): luminosities}

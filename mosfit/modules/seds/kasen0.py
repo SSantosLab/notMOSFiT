@@ -40,6 +40,8 @@ class Kasen0(SED):
         self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
+
+
     def process(self, **kwargs):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
@@ -73,6 +75,17 @@ class Kasen0(SED):
         print('rest times')
         print(self._rest_times)
         print(self._rest_times.shape)
+
+
+
+        self._times_to_proc = [
+            np.inf
+            if self._rest_texplosion > x else (x - self._rest_texplosion)
+            for x in self._times
+        ]
+        print('_times_to_proc')
+        print(self._times_to_proc)
+        print(len(self._times_to_proc))
 
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
