@@ -50,58 +50,16 @@ class Kasen0(SED):
 
         self._times = kwargs['dense_times']
         self._hidden = kwargs['hiddenstuff']
-        print(len(self._hidden))
+        print("hidden", len(self._hidden))
         ts = [
             np.inf
             if self._rest_texplosion > x else (x - self._rest_texplosion)
             for x in self._times
         ]
-#        times_key = self.key('times_to_proc')
-#        kwargs = self.prepare_input(times_key, **kwargs)
-#        self._times = kwargs[times_key]
-#        self._dense_times = kwargs[self.key('dense_times')]
-        print(len(ts))
+        print("ts", len(ts))
 
-        print(len(self._luminosities))
-       # print(len(self._dense_times))
-        '''
-            Okay what have we learned so far? There's some sort of weird data
-            format within MOSFiT, where  dense_times is evenly spaced in log 
-            space. BUT! When processing luminosities, it's not exactly 1 to 1
-            for the times. Instead, each t in dense_time has an array that it
-            corresponds to called dense_indices, which tells you which index
-            in the dense_lums array that time corresponds to... 
-            18:02 EST 2018.08.07
-        '''
-        '''     print('times')
-        print(self._times)
-        print(len(self._times))
-        print('dense_times')
-        print(self._dense_times)
-        print(self._dense_times.shape)
+        print(len("lums", self._luminosities))
 
-
-        print('lums')
-        print(self._luminosities.shape)
-        print('indices')
-        print(self._indices)
-        print(self._indices.shape)
-        print('rest times')
-        print(self._rest_times)
-        print(self._rest_times.shape)
-
-
-
-        [
-            np.inf
-            if self._rest_texplosion > x else (x - self._rest_texplosion)
-            for x in self._dense_times
-        ]
-        print('_times_to_proc')
-        print(self._times_to_proc)
-        print(len(self._times_to_proc))
-
-        '''
 
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
