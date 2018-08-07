@@ -14,7 +14,7 @@ class FakeLum(Engine):
     def __init__(self, **kwargs):
         """Initialize module."""
         super(Engine, self).__init__(**kwargs)
-    self._wants_dense = True # This function wants a dense times array
+        self._wants_dense = True # This function wants a dense times array
     
 
     def process(self, **kwargs):
