@@ -49,6 +49,7 @@ class Kasen1(SED):
         times_key = self.key('times_to_proc')
         kwargs = self.prepare_input(times_key, **kwargs)
         self._times = kwargs[times_key]
+ 
         '''
             Okay what have we learned so far? There's some sort of weird data
             format within MOSFiT, where  dense_times is evenly spaced in log 
