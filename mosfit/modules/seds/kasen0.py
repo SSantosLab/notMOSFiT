@@ -49,6 +49,7 @@ class Kasen0(SED):
         times_key = self.key('times_to_proc')
         kwargs = self.prepare_input(times_key, **kwargs)
         self._times = kwargs[times_key]
+        self._dense_times = kwargs[self.key(dense_times)]
         print(len(self._times))
         print(len(self._luminosities))
         '''
@@ -144,7 +145,7 @@ class Kasen0(SED):
 
             # Find corresponding closest time
 
-            t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
+            t_closest_i = (np.abs(self._kasen_times-self._dense_times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
             sed = np.array([])
