@@ -98,7 +98,9 @@ class Kasen0(SED):
                     [czp1 / self._frequencies[li]])
 
             # Find corresponding closest time
-            print(self._times[li])
+            print(self._times[li][0])
+            print(" ")
+            print(self._times[li][1])
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
