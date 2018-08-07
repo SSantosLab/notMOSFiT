@@ -44,7 +44,10 @@ class Kasen0(SED):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
+        print(self._luminosities.sha)
         self._times = kwargs[self.key('dense_times')]
+        print(len(self._times))
+        print(len(self._luminosities))
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
@@ -98,9 +101,6 @@ class Kasen0(SED):
                     [czp1 / self._frequencies[li]])
 
             # Find corresponding closest time
-            print(self._times[li][0])
-            print(" ")
-            print(self._times[li][1])
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
