@@ -21,7 +21,6 @@ class Kasen1(SED):
     What is my life
     '''
 
-
     # Kasen-calculated parameters
     MASS = np.array([.001, .0025, .005, .01, .02, .025, .03, .04, .05, .075, .1])
     VKIN = np.array([.03, .05, .1, .2, .3])
@@ -41,11 +40,54 @@ class Kasen1(SED):
         self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
+
+
     def process(self, **kwargs):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
-        self._times = kwargs[self.key('dense_times')]
+        times_key = self.key('times_to_proc')
+        kwargs = self.prepare_input(times_key, **kwargs)
+        self._times = kwargs[times_key]
+        '''
+            Okay what have we learned so far? There's some sort of weird data
+            format within MOSFiT, where  dense_times is evenly spaced in log 
+            space. BUT! When processing luminosities, it's not exactly 1 to 1
+            for the times. Instead, each t in dense_time has an array that it
+            corresponds to called dense_indices, which tells you which index
+            in the dense_lums array that time corresponds to... 
+            18:02 EST 2018.08.07
+        '''
+   '''     print('times')
+        print(self._times)
+        print(len(self._times))
+        print('dense_times')
+        print(self._dense_times)
+        print(self._dense_times.shape)
+
+
+        print('lums')
+        print(self._luminosities.shape)
+        print('indices')
+        print(self._indices)
+        print(self._indices.shape)
+        print('rest times')
+        print(self._rest_times)
+        print(self._rest_times.shape)
+
+
+
+        [
+            np.inf
+            if self._rest_texplosion > x else (x - self._rest_texplosion)
+            for x in self._dense_times
+        ]
+        print('_times_to_proc')
+        print(self._times_to_proc)
+        print(len(self._times_to_proc))
+
+        '''
+
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
@@ -70,9 +112,9 @@ class Kasen1(SED):
 
         # Some temp vars for speed.
         cc = self.C_CONST
+
         zp1 = 1.0 + kwargs[self.key('redshift')]
         Azp1 = u.Angstrom.cgs.scale / zp1
-
         czp1 = cc / zp1
 
 
@@ -99,7 +141,7 @@ class Kasen1(SED):
                     [czp1 / self._frequencies[li]])
 
             # Find corresponding closest time
-            print(self._times[li])
+
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies

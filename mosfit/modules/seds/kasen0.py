@@ -46,12 +46,9 @@ class Kasen0(SED):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
-        self._dense_times = kwargs[self.key('dense_times')]
-        self._times = kwargs[self.key('times')]
-        self._rest_times = kwargs[self.key('rest_times')]
-        self._rest_texplosion = kwargs[self.key('resttexplosion')]
-
-        self._indices = kwargs[self.key('dense_indices')]
+        times_key = self.key('times_to_proc')
+        kwargs = self.prepare_input(times_key, **kwargs)
+        self._times = kwargs[times_key]
         '''
             Okay what have we learned so far? There's some sort of weird data
             format within MOSFiT, where  dense_times is evenly spaced in log 
@@ -61,7 +58,7 @@ class Kasen0(SED):
             in the dense_lums array that time corresponds to... 
             18:02 EST 2018.08.07
         '''
-        print('times')
+   '''     print('times')
         print(self._times)
         print(len(self._times))
         print('dense_times')
@@ -80,7 +77,7 @@ class Kasen0(SED):
 
 
 
-        self._times_to_proc = [
+        [
             np.inf
             if self._rest_texplosion > x else (x - self._rest_texplosion)
             for x in self._dense_times
@@ -88,6 +85,8 @@ class Kasen0(SED):
         print('_times_to_proc')
         print(self._times_to_proc)
         print(len(self._times_to_proc))
+
+        '''
 
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
