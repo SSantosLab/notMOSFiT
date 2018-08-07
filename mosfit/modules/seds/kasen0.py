@@ -45,7 +45,7 @@ class Kasen0(SED):
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
         self._times = kwargs[self.key('dense_times')]
-        print(self._timess.shape)
+        print(self._times.shape)
         print(self._luminosities.shape)
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
