@@ -49,7 +49,8 @@ class Kasen0(SED):
         self._rest_texplosion = kwargs[self.key('resttexplosion')]
 
         self._times = kwargs['dense_times']
-
+        self._hidden = kwargs['hiddenstuff']
+        print(len(self._hidden))
         ts = [
             np.inf
             if self._rest_texplosion > x else (x - self._rest_texplosion)
@@ -60,6 +61,7 @@ class Kasen0(SED):
 #        self._times = kwargs[times_key]
 #        self._dense_times = kwargs[self.key('dense_times')]
         print(len(ts))
+
         print(len(self._luminosities))
        # print(len(self._dense_times))
         '''

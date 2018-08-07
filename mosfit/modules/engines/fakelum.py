@@ -33,4 +33,4 @@ class FakeLum(Engine):
         print(luminosities)
         print(len(luminosities))
         
-        return {self.dense_key('luminosities'): luminosities, self.key('times_to_proc'):ts}
+        return {self.dense_key('luminosities'): luminosities, self.key('hiddenstuff'):ts}
