@@ -52,6 +52,7 @@ class Kasen0(SED):
         self._dense_times = kwargs[self.key('dense_times')]
         print(len(self._times))
         print(len(self._luminosities))
+        print(len(self._dense_times))
         '''
             Okay what have we learned so far? There's some sort of weird data
             format within MOSFiT, where  dense_times is evenly spaced in log 
