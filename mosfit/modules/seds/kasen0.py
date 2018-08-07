@@ -48,7 +48,7 @@ class Kasen0(SED):
         self._indices = kwargs[self.key('dense_indices')]
         print(self._times.shape)
         print(self._luminosities.shape)
-        print(self._indices.shape)
+        print(self._indices)
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
