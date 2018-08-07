@@ -44,7 +44,6 @@ class Kasen0(SED):
         lum_key = self.key('luminosities')
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
-        print(self._luminosities.sha)
         self._times = kwargs[self.key('dense_times')]
         print(len(self._times))
         print(len(self._luminosities))
