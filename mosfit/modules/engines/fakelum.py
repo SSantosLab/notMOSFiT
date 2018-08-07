@@ -22,5 +22,4 @@ class FakeLum(Engine):
         self._times = kwargs[self.key('dense_times')]
         luminosities = [ 0.0 for t in self._times]
         
-        print("len lums (at the fakelum stage) " + str(len(luminosities)))
         return {self.dense_key('luminosities'): luminosities}

@@ -45,15 +45,29 @@ class Kasen0(SED):
         kwargs = self.prepare_input(lum_key, **kwargs)
         self._luminosities = kwargs[lum_key]
         self._times = kwargs[self.key('dense_times')]
+        self._rest_times = kwargs[self.key('rest_times')]
         self._indices = kwargs[self.key('dense_indices')]
         '''
-            Okay what have we learned so far? 
+            Okay what have we learned so far? There's some sort of weird data
+            format within MOSFiT, where  dense_times is evenly spaced in log 
+            space. BUT! When processing luminosities, it's not exactly 1 to 1
+            for the times. Instead, each t in dense_time has an array that it
+            corresponds to called dense_indices, which tells you which index
+            in the dense_lums array that time corresponds to... 
+            18:02 EST 2018.08.07
         '''
-
+        print('dense times')
         print(self._times)
-
+        print(self._times.shape)
+        print('lums')
         print(self._luminosities.shape)
+        print('indices')
         print(self._indices)
+        print(self._indices.shape)
+        print('rest times')
+        print(self._rest_times)
+        print(self._rest_times.shape)
+
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
@@ -107,6 +121,7 @@ class Kasen0(SED):
                     [czp1 / self._frequencies[li]])
 
             # Find corresponding closest time
+
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
