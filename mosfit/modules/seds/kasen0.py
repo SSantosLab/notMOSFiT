@@ -59,7 +59,7 @@ class Kasen0(SED):
         '''
         print('times')
         print(self._times)
-        print(self._times.shape)
+        print(len(self._times))
         print('dense_times')
         print(self._dense_times)
         print(self._dense_times.shape)
