@@ -49,6 +49,8 @@ class Kasen0(SED):
         self._dense_times = kwargs[self.key('dense_times')]
         self._times = kwargs[self.key('times')]
         self._rest_times = kwargs[self.key('rest_times')]
+        self._rest_texplosion = kwargs[self.key('resttexplosion')]
+
         self._indices = kwargs[self.key('dense_indices')]
         '''
             Okay what have we learned so far? There's some sort of weird data
