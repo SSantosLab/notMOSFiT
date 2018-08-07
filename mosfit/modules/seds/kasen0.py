@@ -83,7 +83,7 @@ class Kasen0(SED):
         self._times_to_proc = [
             np.inf
             if self._rest_texplosion > x else (x - self._rest_texplosion)
-            for x in self._times
+            for x in self._dense_times
         ]
         print('_times_to_proc')
         print(self._times_to_proc)
