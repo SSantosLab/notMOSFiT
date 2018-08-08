@@ -30,8 +30,8 @@ class FakeLum(Engine):
 
 
         luminosities = [ 0.0  for t in ts]
-	print("lums module")
-        print(luminosities)
-        print(len(luminosities))
+	#print("lums module")
+        #print(luminosities)
+        #print(len(luminosities))
         
         return {self.dense_key('luminosities'): luminosities}
