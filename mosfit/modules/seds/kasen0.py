@@ -43,23 +43,14 @@ class Kasen0(SED):
 
 
     def process(self, **kwargs):
-        lum_key = self.key('luminosities')
-        kwargs = self.prepare_input(lum_key, **kwargs)
-        self._luminosities = kwargs[lum_key]
-        self._rest_texplosion = kwargs[self.key('resttexplosion')]
+        kwargs = self.prepare_input(self.key('dense_luminosities'), **kwargs)
+        self._luminosities = kwargs[self.key('dense_luminosities')]
 
-        self._times = kwargs['dense_times']
-        self._hidden = kwargs['hiddenstuff']
-        print("hidden", len(self._hidden))
-        ts = [
-            np.inf
-            if self._rest_texplosion > x else (x - self._rest_texplosion)
-            for x in self._times
-        ]
-        print("ts", len(ts))
+	#self._dense_luminosities = kwargs[self.key('dense_luminosities')]
 
-        print(len("lums", self._luminosities))
-
+	print("lums", len(self._luminosities))
+	self._times = kwargs[self.key('dense_times')]
+	print("times", len(self._times))
 
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
@@ -115,7 +106,7 @@ class Kasen0(SED):
 
             # Find corresponding closest time
 
-            t_closest_i = (np.abs(self._kasen_times-ts[li])).argmin()
+            t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame frequencies
             sed = np.array([])

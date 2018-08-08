@@ -29,7 +29,8 @@ class FakeLum(Engine):
         ]
 
 
-        luminosities = [ 0.0 for t in ts]
+        luminosities = [ "why"  for t in ts]
+	print("lums module")
         print(luminosities)
         print(len(luminosities))
         

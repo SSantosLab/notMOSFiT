@@ -111,7 +111,8 @@
     "kasen0":{
         "kind":"sed",
         "inputs":[
-	        "fakelum",
+	    "fakelum",
+	    "densetimes",
             "texplosion",
             "redshift",
             "vk0",
@@ -134,7 +135,8 @@
     "kasen1":{
         "kind":"sed",
         "inputs":[
-      	    "fakelum",
+      	   "fakelum",
+	   "densetimes",
             "texplosion",
             "redshift",
             "vk1",
