@@ -29,9 +29,9 @@ class FakeLum(Engine):
         ]
 
 
-        luminosities = [ "why"  for t in ts]
+        luminosities = [ 0.0  for t in ts]
 	print("lums module")
         print(luminosities)
         print(len(luminosities))
         
-        return {self.dense_key('luminosities'): luminosities, self.key('hiddenstuff'):ts}
+        return {self.dense_key('luminosities'): luminosities}

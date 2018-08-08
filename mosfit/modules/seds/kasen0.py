@@ -43,10 +43,13 @@ class Kasen0(SED):
 
 
     def process(self, **kwargs):
-        kwargs = self.prepare_input(self.key('dense_luminosities'), **kwargs)
-        self._luminosities = kwargs[self.key('dense_luminosities')]
-    	self._times = kwargs[self.key('dense_times')]
-
+        kwargs = self.prepare_input(self.key('luminosities'), **kwargs)
+        self._luminosities = kwargs[self.key('luminosities')]
+    	self._times = kwargs[self.key('rest_times')]
+	
+	# God lord almightly it WAS REST TIMES ALL ALONG
+	#print("l", len(self._luminosities))
+	#print("t", len(self._times))
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 

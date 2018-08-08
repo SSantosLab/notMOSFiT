@@ -386,7 +386,8 @@ class Photometry(Module):
         eff_fluxes = np.zeros_like(self._luminosities)
         offsets = np.zeros_like(self._luminosities)
         model_observations = np.zeros_like(self._luminosities)
-        for li, lum in enumerate(self._luminosities):
+        
+	for li, lum in enumerate(self._luminosities):
             bi = self._band_indices[li]
             if bi >= 0:
                 if (self._observation_types[li] == 'magnitude' or
