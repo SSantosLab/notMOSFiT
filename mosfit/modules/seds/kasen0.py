@@ -101,11 +101,11 @@ class Kasen0(SED):
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
                     bi, self._sample_wavelengths[bi] * Azp1)
-                # bi, self._sample_wavelengths[bi] * 10.)
+		     # bi, self._sample_wavelengths[bi] * 10.)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[li]])
-
+	    print("rest_wavs", rest_wavs)
             # Find corresponding closest time
 
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
@@ -124,4 +124,5 @@ class Kasen0(SED):
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
+	print("example sed", seds[-1])
         return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
