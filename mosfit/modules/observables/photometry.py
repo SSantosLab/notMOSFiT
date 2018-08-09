@@ -379,7 +379,8 @@ class Photometry(Module):
         self._dist_const = FOUR_PI * (kwargs['lumdist'] * MPC_CGS) ** 2
         self._ldist_const = np.log10(self._dist_const)
         self._luminosities = kwargs[self.key('luminosities')]
-        self._frequencies = kwargs['all_frequencies']
+        print("photo lums", self._luminosities)
+	self._frequencies = kwargs['all_frequencies']
         self._zps = kwargs.get('all_zeropoints', np.zeros_like(
             self._luminosities))
         zp1 = 1.0 + kwargs['redshift']

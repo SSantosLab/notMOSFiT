@@ -118,11 +118,15 @@ class Kasen1(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-        #print(t_closest_i, w_closest_i)
-            seds.append(sed)
+            
+            # Calculate luminosity from sed
+            L_t = np.trapz(np.flip(kasen_seds['SEDs'][t_closest_i], 0), x=np.flip(self._kasen_frequencies, 0))
+	    self._luminosities[li] = self._luminosities[li] +  L_t
+
+	    seds.append(sed)
             seds[-1][np.isnan(seds[-1])] = 0.0
         
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, 'luminosities':self._luminosities}

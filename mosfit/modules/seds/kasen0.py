@@ -41,7 +41,7 @@ class Kasen0(SED):
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
 
-
+	print("kasen_wavs", self._kasen_frequencies)
     def process(self, **kwargs):
         kwargs = self.prepare_input(self.key('luminosities'), **kwargs)
         self._luminosities = kwargs[self.key('luminosities')]
@@ -97,15 +97,15 @@ class Kasen0(SED):
 
         # For each time (luminosities as proxy)
         for li, lum in enumerate(self._luminosities):
-            bi = self._band_indices[li]
+	    bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1)
+                    bi, self._sample_wavelengths[bi] * Azp1 * 1e8)
 		     # bi, self._sample_wavelengths[bi] * 10.)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[li]])
-	    print("rest_wavs", rest_wavs)
+	   # print("rest_wavs", rest_wavs)
             # Find corresponding closest time
 
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
@@ -117,8 +117,12 @@ class Kasen0(SED):
                 w_closest_i = np.abs(self._kasen_frequencies-w).argmin()
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
-        #print(t_closest_i, w_closest_i)
-            seds.append(sed)
+            
+	    # Calculate luminosity from sed
+	    
+	    L_t = np.trapz(np.flip(kasen_seds['SEDs'][t_closest_i], 0), x=np.flip(self._kasen_frequencies, 0))
+	    self._luminosities[li] = self._luminosities[li] +  L_t
+	    seds.append(sed)
             
 	    #This line turns all the nans to 0s, which is kind of useless anyway
 	    # because both 0s and nans break the code
@@ -127,5 +131,5 @@ class Kasen0(SED):
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-	print("example sed", seds[-1])
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+	#print("example sed", seds[-1])
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,'luminosities':self._luminosities }
