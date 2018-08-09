@@ -33,11 +33,11 @@ class Kasen1(SED):
     C_CONST = c.c.cgs.value
 
     def __init__(self, **kwargs):
-        super(Kasen1, self).__init__(**kwargs)
+        super(Kasen0, self).__init__(**kwargs)
 
         # Read in times and frequencies arrays (same for all SEDs)
-        self._dir_path = os.path.dirname(os.path.realpath(__file__))
-        self._kasen_frequencies = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/frequency_angstroms.p'), "rb"))
+        self._dir_path = '/data/des51.b/data/kamile/kasen_seds/'
+        self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
 
@@ -67,7 +67,7 @@ class Kasen1(SED):
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * (1. - weight_goem)
 
-        # Some temp vars for speed.
+         # Some temp vars for speed.
         cc = self.C_CONST
 
         zp1 = 1.0 + kwargs[self.key('redshift')]
