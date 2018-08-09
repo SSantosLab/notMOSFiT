@@ -119,7 +119,10 @@ class Kasen0(SED):
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
         #print(t_closest_i, w_closest_i)
             seds.append(sed)
-            seds[-1][np.isnan(seds[-1])] = 0.0
+            
+	    #This line turns all the nans to 0s, which is kind of useless anyway
+	    # because both 0s and nans break the code
+	    seds[-1][np.isnan(seds[-1])] = 0.0
         
 
         seds = self.add_to_existing_seds(seds, **kwargs)
