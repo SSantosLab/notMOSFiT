@@ -21,25 +21,23 @@ Xlan = np.array([1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-9])
 Xlan_s = np.array(['1e-1', '1e-2', '1e-3', '1e-4', '1e-5', '1e-9'])
 
 open_path = '../../Kasen_Kilonova_Models_2017/systematic_kilonova_model_grid/'
-save_path = '../../Kasen_SED_pickles/'
+save_path = '/data/des51.b/data/kamile/kasen_seds/'
 
 # Create Frequencies + Times List and pickling
-fname = open_path + 'knova_d1_n10_m' + mass_s[0] + '_vk' + vk_s[0] + '_fd1.0_Xlan' + Xlan_s[0] + '.0.h5'
+fname = open_path + 'knova_d1_n10_m0.025_vk0.30_fd1.0_Xlan1e-4.0.h5' 
 print(fname)
 fin    = h5py.File(fname,'r')
 
 # frequency in Hz
 nu    = np.array(fin['nu'],dtype='d')
-lam = c/nu*1e8 # in angstroms
-print("pickling frequency array")
-pickle.dump(lam, open(save_path + "frequency_angstroms.p", "wb" ))
-
-
+lam = c/nu*1e10 # in angstroms
+print("pickling wavelength array")
+pickle.dump(np.flip(lam, 0), open(save_path + "wavelength_angstroms.p", "wb" ))
 # array of time in seconds -> convert to days
 # throw out negative values and things > 14.0
 times = np.array(fin['time'])
 times = times/3600.0/24.0
-times = times[(times >= 0.0) & (times <= 3.0)]
+times = times[(times >= 0.0) & (times <= 14.0)]
 print("pickling times array")
 pickle.dump(times, open(save_path + "times_days.p", "wb"))
 
@@ -67,19 +65,20 @@ for mi, m in enumerate(mass_s):
             # throw out negative values and things > 14.0
             times = np.array(fin['time'])
             times = times/3600.0/24.0
-            times = times[(times >= 0.0) & (times <= 3.0)]
+            times = times[(times >= 0.0) & (times <= 14.0)]
 
             # specific luminosity (ergs/s/Hz) 
             # this is a 2D array, Lnu[times][nu]
             Lnu_all   = np.array(fin['Lnu'],dtype='d')
-
             for t in times:
                 # index corresponding to t
                 it = bisect.bisect(times,t)
                 # spectrum at this epoch
                 Lnu = Lnu_all[it,:]
+	 	# Unit correction
+		Llam = Lnu*nu**2.0/c/1e8
                 
-                data['SEDs'].append(Lnu)
+                data['SEDs'].append(np.flip(Llam, 0))
             print("# SEDs:" + str(len(data['SEDs'])))
             pickle.dump(data, open(save_path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.p', "wb" ))
             

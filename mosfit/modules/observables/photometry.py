@@ -388,6 +388,8 @@ class Photometry(Module):
         offsets = np.zeros_like(self._luminosities)
         model_observations = np.zeros_like(self._luminosities)
         
+	print("len lums", len(self._luminosities))
+	print("len seds", len(kwargs['seds']))
 	for li, lum in enumerate(self._luminosities):
             bi = self._band_indices[li]
             if bi >= 0:
@@ -395,7 +397,7 @@ class Photometry(Module):
                         self._observation_types[li] == 'magcount'):
                     offsets[li] = self._band_offsets[bi]
                     wavs = kwargs['sample_wavelengths'][bi]
-                    yvals = np.interp(
+		    yvals = np.interp(
                         wavs, self._band_wavelengths[bi],
                         self._transmissions[bi]) * kwargs['seds'][li] / zp1
                     eff_fluxes[li] = np.trapz(

@@ -33,10 +33,10 @@ class Kasen1(SED):
     C_CONST = c.c.cgs.value
 
     def __init__(self, **kwargs):
-        super(Kasen0, self).__init__(**kwargs)
+        super(Kasen1, self).__init__(**kwargs)
 
         # Read in times and frequencies arrays (same for all SEDs)
-        self._dir_path = '/data/des51.b/data/kamile/kasen_seds/'
+        self._dir_path = '/data/des51.b/data/kamile/'
         self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
@@ -92,7 +92,7 @@ class Kasen1(SED):
 
         # For each time (luminosities as proxy)
         for li, lum in enumerate(self._luminosities):
-        bi = self._band_indices[li]
+            bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
                     bi, self._sample_wavelengths[bi] * Azp1 * 1e8)
@@ -113,11 +113,11 @@ class Kasen1(SED):
 
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
             
-        # Calculate luminosity from sed
-        L_t = np.trapz(kasen_seds['SEDs'][t_closest_i], x=self._kasen_wavs)
-        self._luminosities[li] = self._luminosities[li] +  L_t
+            # Calculate luminosity from sed
+            L_t = np.trapz(kasen_seds['SEDs'][t_closest_i], x=self._kasen_wavs)
+            self._luminosities[li] = self._luminosities[li] +  L_t
 
-        seds.append(sed)
+            seds.append(sed)
             
         #This line turns all the nans to 0s, which is kind of useless anyway
         # because both 0s and nans break the code
