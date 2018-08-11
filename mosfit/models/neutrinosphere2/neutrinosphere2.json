@@ -114,13 +114,10 @@
             "band_wave_ranges": "photometry"
         },
         "replacements":{
-            "vk":"vk0",
-            "xlan":"xlan0",
-            "mejecta":"mejecta0",
-            "mass_weight":"mass_weight0",
-            "Msph": "Msph0",
-            "vk":"vk0",
-            "xlan":"xlan0"
+            "vk0":"vk",
+            "xlan0":"xlan",
+            "mass_weight0":"mass_weight",
+            "Msph0": "Msph"
         }
     },
     "neutrinosphere1":{
@@ -154,10 +151,10 @@
             "band_wave_ranges": "photometry"
         },
         "replacements":{
-            "vk":"vk1",
-            "xlan":"xlan1",
-            "mejecta":"mejecta1",
-            "mass_weight":"mass_weight1",
+            "vk1":"vk",
+            "xlan1":"xlan",
+            "Msph1":"Msph",
+            "mass_weight1":"mass_weight",
 	    "Msph":"Msph1",
 	    "vk":"vk1"
         }
