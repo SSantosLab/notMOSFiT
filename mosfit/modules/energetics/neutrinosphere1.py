@@ -9,7 +9,7 @@ from mosfit.modules.energetics.energetic import Energetic
 
 
 class Neutrinosphere1(Energetic):
-   """Generate Kasen's `v_k`, `X_lan`, `m_ej`, and a mass-corresponding
+    '''Generate Kasen's `v_k`, `X_lan`, `m_ej`, and a mass-corresponding
         weight based on some other parameters.
 
         TYPE1 == KASEN1 == TIDAL TAIL EJECTA
@@ -18,7 +18,7 @@ class Neutrinosphere1(Energetic):
         implemented by Kamile Lukosiute <klukosiu@wellesley.edu>
 
         August 2018
-    """
+    '''
     _REFERENCES = [
         {SOURCE.BIBCODE: '2014ApJ...789L..39W'},
         {SOURCE.BIBCODE: '2014MNRAS.443.3134P'},
