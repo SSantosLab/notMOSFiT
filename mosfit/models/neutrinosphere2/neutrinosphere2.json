@@ -141,14 +141,11 @@
     "kasen1":{
         "kind":"sed",
         "inputs":[
+	   "neutrinosphere1",
       	   "fakelum",
 	   "densetimes",
             "texplosion",
             "redshift",
-            "vk1",
-            "xlan1",
-            "mejecta1",
-            "mass_weight1",
             "theta",
             "phi",
             "kasen0"
@@ -160,7 +157,9 @@
             "vk":"vk1",
             "xlan":"xlan1",
             "mejecta":"mejecta1",
-            "mass_weight":"mass_weight1"
+            "mass_weight":"mass_weight1",
+	    "Msph":"Msph1",
+	    "vk":"vk1"
         }
     },
     "photometry":{

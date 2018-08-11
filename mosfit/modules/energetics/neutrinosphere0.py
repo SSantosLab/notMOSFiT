@@ -4,7 +4,7 @@ from astrocats.catalog.source import SOURCE
 from scipy import interpolate
 from scipy.constants import c, G 
 from mosfit.modules.energetics.energetic import Energetic
-
+import os
 
 # Important: Only define one ``Module`` class per file.
 
@@ -42,7 +42,8 @@ class Neutrinosphere0(Energetic):
         {SOURCE.BIBCODE: '2014ApJ...789L..39W'}
     ]
 
-
+    C = c 		# m/s
+    GG = G 		# Global variables are hard okay?  
     MSUN = 2e30
     M = 2.75*MSUN       # kg
     SB = 1.028e-5       # 10^51 erg/s, km^-2, MeV^-4
@@ -124,7 +125,7 @@ class Neutrinosphere0(Energetic):
 
         # Exclude data that won't be needed
         self.LRDATA = self.LRDATA[np.where((self.LRDATA[:,1] >= 7.5) & (self.LRDATA[:,1] <= 32))]
-        LR_MASSES = np.unique(self.LRDATA[:,2])
+        self.LR_MASSES = np.unique(self.LRDATA[:,2])
 
 
 
@@ -161,7 +162,7 @@ class Neutrinosphere0(Energetic):
         # ejected from ~surface of neutron star
         r = 15.*1000  # m
         t = t0*0.001 # s
-        v = ( (vf*self.c)**2. + 2.*self.G*self.M / r)**0.5 # m/s - starting velocity
+        v = ( (vf*self.C)**2. + 2.*self.GG*self.M / r)**0.5 # m/s - starting velocity
 
         reactions = 0
         for n in range(5000): # sum up reactions
@@ -173,7 +174,7 @@ class Neutrinosphere0(Energetic):
             
             #integrate forward reactions, a, v, r, t
             reactions += (k2_new / (r**2)) * dt
-            a = -self.G*self.M/(r**2)
+            a = -self.GG*self.M/(r**2)
             v += a*dt
             r += v*dt + .5*a*(dt**2)
             t += dt
@@ -181,7 +182,7 @@ class Neutrinosphere0(Energetic):
                 return 0
         
         Ye_eq = k1/k2
-        Ye_answer = Ye_eq-(Ye_eq-Ye0)*(np.exp(-reactions))
+        Ye_answer = Ye_eq-(Ye_eq-self.YE0)*(np.exp(-reactions))
         
         return Ye_answer
 
@@ -227,16 +228,16 @@ class Neutrinosphere0(Energetic):
         # ---------------------------------------------------------------------
 
         Msph = self._mejecta / mass_weight
-        v_k  = self._vcoast * velocity_factor
+        v_k  = self._vcoast * self.V_FACTOR
         
         #cut out unneeded masses, Ye's from Xla table
         lower_mass = 0
         upper_mass = 1
         if Msph > 0.001:
-            try: lower_mass = masses[np.where(masses < Msph)[0][-1]]
+            try: lower_mass = self.LR_MASSES[np.where(self.LR_MASSES < Msph)[0][-1]]
             except IndexError: lower_mass = 0
         if Msph < 0.1:
-            try: upper_mass=masses[np.where(masses > Msph)[0][0]]
+            try: upper_mass = self.LR_MASSES[np.where(self.LR_MASSES > Msph)[0][0]]
             except IndexError: upper_mass = 1
 
         lrdatatemp = self.LRDATA[np.where((self.LRDATA[:,0] >= Ye-.04) 
