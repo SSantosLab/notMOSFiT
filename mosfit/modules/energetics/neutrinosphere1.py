@@ -211,7 +211,6 @@ class Neutrinosphere1(Energetic):
         self._phi     = kwargs[self.key('phi')]
 
         #mass fractions (or volume fractions, same thing)
-        shock_opening_ang = self._phi*np.pi/180.
         shock_mass_fraction = ( 0.5 * ( (2+np.cos(shock_opening_ang) ) *
             ( 1 - np.cos(shock_opening_ang) )**2 + 
             ( np.sin(shock_opening_ang)**2 ) * np.cos(shock_opening_ang) ) )
