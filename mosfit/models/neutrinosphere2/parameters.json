@@ -17,14 +17,9 @@
         "max_value":1.5707,
         "log":false
     },
-    "vk1":{
+    "vcoast1":{
         "min_value":0.03,
         "max_value":0.3,
-        "log":false
-    },
-    "xlan1":{
-        "min_value":1e-9,
-        "max_value":1e-1,
         "log":false
     },
     "mejecta1":{
@@ -32,28 +27,14 @@
         "max_value":0.1,
         "log":false   
     },
-    "vk0":{
+    "vcoast0":{
         "min_value":0.03,
         "max_value":0.3,
-        "log":false
-    },
-    "xlan0":{
-        "min_value":1e-9,
-        "max_value":1e-1,
         "log":false
     },
     "mejecta0":{
         "min_value":0.001,
         "max_value":0.1,
         "log":false   
-    },
-    "mass_weight0":{
-        "min_value":1.02,
-        "max_value":5.76,
-        "log":false       },
-    "mass_weight1":{
-        "min_value":1.21,
-        "max_value":65.82,
-        "log":false  
-    }
+    }  
 }
