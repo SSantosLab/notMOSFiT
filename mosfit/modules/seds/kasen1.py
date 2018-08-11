@@ -51,8 +51,11 @@ class Kasen1(SED):
 
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
+        kwargs = self.prepare_input(self.key('vk'), **kwargs)
         self._vk = kwargs[self.key('vk')]
+        kwargs = self.prepare_input(self.key('xlan'), **kwargs)
         self._xlan = kwargs[self.key('xlan')]
+        kwargs = self.prepare_input(self.key('Msph'), **kwargs)
         self._mass = kwargs[self.key('Msph')]
         
         # mass fractional weight provided by neutrinoshere module
