@@ -13,7 +13,7 @@ class Neutrinosphere0(Energetic):
     """Generate Kasen's `v_k`, `X_lan`, `m_ej`, and a mass-corresponding
         weight based on some other parameters.
 
-        TYPE0 == CORRESPONDS TO KASEN0 TYPE 0 == SHOCK HEATED EJECTA
+        TYPE0 == KASEN0  == SHOCK HEATED EJECTA
 
         Actual physics done by Jessica Metzger <jmetzger@uchicago.edu>, 
         implemented by Kamile Lukosiute <klukosiu@wellesley.edu>
@@ -110,7 +110,7 @@ class Neutrinosphere0(Energetic):
     # 1978A&A....67..185T
     V_FACTOR=((14/9.)*(1/4. + 1/5. - 1/(50*(10**.5))))**.5
 
-    # Table giving lanthanide fraction for a given Y_e, s, Msph, and velocity
+
 
     def __init__(self, **kwargs):
         """Initialize module."""
@@ -118,6 +118,7 @@ class Neutrinosphere0(Energetic):
 
         self._dir_path = os.path.dirname(os.path.realpath(__file__))
 
+        # Table giving lanthanide fraction for a given Y_e, s, Msph, and velocity
         self.LRDATA = open(os.path.join(self._dir_path , 'LRdata_modified.txt'),'r').readlines()[1:]
         self.LRDATA = np.array([x.rstrip().split(',') for x in self.LRDATA]).astype(np.float)
 
@@ -137,12 +138,13 @@ class Neutrinosphere0(Energetic):
         t0 = something???? [ms]
         dt = integration time step [s]
         '''
-
+        # THIS SECTION SPECIFIC TO TYPE 0 EJECTA
+        # ---------------------------------------------------------------------
         L_n = self.L_NEUT_POL
         E_n = self.E_NEUT_POL
         L_a = self.L_ANTI_POL
         E_a = self.E_ANTI_POL
-
+        # ---------------------------------------------------------------------
         # anti/neutrino capture cross sections
         W_n = 1+1.02*1.2*1.14*E_n/self.M_N
         W_a = 1-7.22*1.2*1.14*E_a/self.M_P
@@ -215,13 +217,14 @@ class Neutrinosphere0(Energetic):
             ( 1 - np.cos(shock_opening_ang) )**2 + 
             ( np.sin(shock_opening_ang)**2 ) * np.cos(shock_opening_ang) ) )
 
+        # THIS SECTION SPECIFIC TO TYPE 0 EJECTA
+        # ---------------------------------------------------------------------
         entropy = 30.
-
         mass_weight = shock_mass_fraction
         Ye = self.getYe(self._vcoast,2,2.5e-6)
         if Ye == 0: #in case integration failed, repeat with smaller timestep
             Ye = self.getYe(self._vcoast,2,1.0e-6)
-
+        # ---------------------------------------------------------------------
 
         Msph = self._mejecta / mass_weight
         v_k  = self._vcoast * velocity_factor
