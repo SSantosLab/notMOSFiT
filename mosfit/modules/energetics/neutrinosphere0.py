@@ -1,7 +1,8 @@
 """Definitions for the `Neutrinosphere0` class."""
 import numpy as np
+from astrocats.catalog.source import SOURCE
 from scipy import interpolate
-from scipy import c, G 
+from scipy.constants import c, G 
 from mosfit.modules.energetics.energetic import Energetic
 
 
