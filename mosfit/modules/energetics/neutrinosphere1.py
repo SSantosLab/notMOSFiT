@@ -254,5 +254,5 @@ class Neutrinosphere1(Energetic):
         if Xla<1.0e-9: Xla=1.0e-9
         
         #spherical mass [Msun], kinetic velocity [c], lanthanide mass fraction, SED mass_weight
-        return {'Msph': Msph, 'v_k': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
+        return {'Msph': Msph, 'vk': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
 

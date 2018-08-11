@@ -53,7 +53,7 @@ class Kasen0(SED):
         # neutrinosphere module (thank you, Jessica Metzger)
         self._vk = kwargs[self.key('vk')]
         self._xlan = kwargs[self.key('xlan')]
-        self._mass = kwargs[self.key('mejecta')]
+        self._mass = kwargs[self.key('Msph')]
         
         # mass fractional weight provided by neutrinoshere module
         self._mass_weight = kwargs[self.key('mass_weight')]

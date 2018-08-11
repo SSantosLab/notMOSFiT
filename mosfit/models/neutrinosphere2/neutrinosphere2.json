@@ -56,17 +56,11 @@
         "class":"parameter",
         "latex":"\\phi"
     },
-    "vk1":{
+    "vcoast1":{
         "kind":"parameter",
         "value":0.1,
         "class":"parameter",
-        "latex":"v_k"
-    },
-    "xlan1":{
-        "kind":"parameter",
-        "value":1e-3,
-        "class":"parameter",
-        "latex":"X_{lan}"
+        "latex":"v_c"
     },
     "mejecta1":{
         "kind":"parameter",
@@ -74,17 +68,11 @@
         "class":"parameter",
         "latex":"m"
     },
-    "vk0":{
+    "vcoast0":{
         "kind":"parameter",
         "value":0.1,
         "class":"parameter",
-        "latex":"v_k"
-    },
-    "xlan0":{
-        "kind":"parameter",
-        "value":1e-3,
-        "class":"parameter",
-        "latex":"X_{lan}"
+        "latex":"v_c"
     },
     "mejecta0":{
         "kind":"parameter",
@@ -92,33 +80,33 @@
         "class":"parameter",
         "latex":"m"
     },
-    "mass_weight0":{
-        "kind":"parameter",
-        "value":1.5,
-        "class":"parameter",
-        "latex":"m_w"
-    },
-    "mass_weight1":{
-        "kind":"parameter",
-        "value":1.5,
-        "class":"parameter",
-        "latex":"m_w"
-    },
     "fakelum":{
         "kind":"engine",
         "inputs": "densetimes"
     },
+    "neutrinosphere0":{
+        "kind": "energetic",
+        "inputs": [
+            "mejecta0",
+            "vcoast0",
+            "phi"
+        ],
+        "replacements": {
+            "mejecta": "mejecta0",
+            "vcoast":"vcoast0",
+            "Msph": "Msph0",
+            "vk":"vk0",
+            "xlan":"xlan0"
+        }
+    },
     "kasen0":{
         "kind":"sed",
         "inputs":[
-	    "fakelum",
-	    "densetimes",
+	        "neutrinosphere0",
+            "fakelum",
+	        "densetimes",
             "texplosion",
             "redshift",
-            "vk0",
-            "xlan0",
-            "mejecta0",
-            "mass_weight0",
             "theta",
             "phi"
         ],
@@ -129,7 +117,25 @@
             "vk":"vk0",
             "xlan":"xlan0",
             "mejecta":"mejecta0",
-            "mass_weight":"mass_weight0"
+            "mass_weight":"mass_weight0",
+            "Msph": "Msph0",
+            "vk":"vk0",
+            "xlan":"xlan0"
+        }
+    },
+    "neutrinosphere1":{
+        "kind": "energetic",
+        "inputs": [
+            "mejecta1",
+            "vcoast1",
+            "phi"
+        ],
+        "replacements": {
+            "mejecta": "mejecta1",
+            "vcoast":"vcoast1",
+            "Msph": "Msph1",
+            "vk":"vk1",
+            "xlan":"xlan1"
         }
     },
     "kasen1":{
