@@ -112,12 +112,20 @@ class Neutrinosphere0(Energetic):
 
     # Table giving lanthanide fraction for a given Y_e, s, Msph, and velocity
 
-    self.LRDATA = open('LRdata_modified.txt','r').readlines()[1:]
-    self.LRDATA = np.array([x.rstrip().split(',') for x in self.LRDATA]).astype(np.float)
+    def __init__(self, **kwargs):
+        """Initialize module."""
+        super(Neutrinosphere0, self).__init__(**kwargs)
 
-    #exclude data that def won't be needed
-    self.LRDATA = self.LRDATA[np.where((self.LRDATA[:,1] >= 7.5) & (self.LRDATA[:,1] <= 32))]
-    LR_MASSES = np.unique(self.LRDATA[:,2])
+        self._dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        self.LRDATA = open(os.path.join(self._dir_path , 'LRdata_modified.txt'),'r').readlines()[1:]
+        self.LRDATA = np.array([x.rstrip().split(',') for x in self.LRDATA]).astype(np.float)
+
+        # Exclude data that won't be needed
+        self.LRDATA = self.LRDATA[np.where((self.LRDATA[:,1] >= 7.5) & (self.LRDATA[:,1] <= 32))]
+        LR_MASSES = np.unique(self.LRDATA[:,2])
+
+
 
     def getYe(self, vf, t0, dt):
         '''
