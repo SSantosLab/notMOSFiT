@@ -40,15 +40,13 @@ class Kasen1(SED):
         self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
-    def weight(self, **kwargs):
-        # viewing angle and opening angle 
-        self._phi = kwargs[self.key('phi')] # half opening
-        self._theta = kwargs[self.key('theta')] # viewing
-        if self._phi + self._theta > np.pi/2.: 
-            x = ( (np.sin(self._phi)**2. - np.cos(self._theta)**2.)**.5/
-                np.sin(self._theta) )
+    def weight(self, phi, theta):
+        # viewing angle heta, half opening angle phi
+        if phi + theta > np.pi/2.: 
+            x = ( (np.sin(phi)**2. - np.cos(theta)**2.)**.5/
+                np.sin(theta) )
         else:
-            x = 0 
+            x = 0
 
         weight0 = ( (np.pi*(np.sin(self._phi)**2.)*(np.cos(self._theta)) + 
             2*(1-np.cos(self._theta))*(np.arcsin(x) - x*(1 - x**2.)**.5))/np.pi )
@@ -75,7 +73,9 @@ class Kasen1(SED):
         self._mass_weight = kwargs[self.key('mass_weight')]
         
         # Total weight function
-        weight_goem = self.weight()
+        self._phi = kwargs[self.key('phi')] # half opening
+        self._theta = kwargs[self.key('theta')] # viewing
+        weight_goem = self.weight(self._phi, self._theta)
         weight = self._mass_weight * weight_goem
         
         # Some temp vars for speed.
