@@ -32,7 +32,7 @@ fin    = h5py.File(fname,'r')
 
 # frequency in Hz
 nu    = np.array(fin['nu'],dtype='d')
-lam = c/nu # *  1e8 * 1e-8 # 1e8 convert to angs, 1e-8 for cm but ofc they cancel
+lam = c/nu * 1e8
 print(lam)
 print("pickling wavelength array")
 pickle.dump(np.flip(lam, 0), open(save_path + "wavelength_angstroms.p", "wb" ))
@@ -82,7 +82,7 @@ for mi, m in enumerate(mass_s):
                 # spectrum at this epoch
                 Lnu = Lnu_all[it,:]
                 # Unit correction
-                Llam = Lnu*nu**2.0/c/ 1e8 / 1e-8 #for angs, then cm                 
+                Llam = Lnu*nu**2.0/c/ 1e8                  
                 data['SEDs'].append(np.flip(Llam, 0))
             print("# SEDs:" + str(len(data['SEDs'])))
             pickle.dump(data, open(save_path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.p', "wb" ))

@@ -102,7 +102,7 @@ class Kasen0(SED):
             bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1)
+                    bi, self._sample_wavelengths[bi] / zp1)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[li]])
