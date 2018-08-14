@@ -40,6 +40,22 @@ class Kasen1(SED):
         self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
 
+    def weight(self, **kwargs):
+        # viewing angle and opening angle 
+        self._phi = kwargs[self.key('phi')] # half opening
+        self._theta = kwargs[self.key('theta')] # viewing
+        if self._phi + self._theta > np.pi/2.: 
+            x = ( (np.sin(self._phi)**2. - np.cos(self._theta)**2.)**.5/
+                np.sin(self._theta) )
+        else:
+            x = 0 
+
+        weight0 = ( (np.pi*(np.sin(self._phi)**2.)*(np.cos(self._theta)) + 
+            2*(1-np.cos(self._theta))*(np.arcsin(x) - x*(1 - x**2.)**.5))/np.pi )
+
+        # TYPE 1 == TIDAL TAIL SO GEOMETRIC FACTOR IS 1 - geometrical_weight
+        return 1. -  weight0
+
 
     def process(self, **kwargs):
         kwargs = self.prepare_input(self.key('luminosities'), **kwargs)
@@ -58,22 +74,15 @@ class Kasen1(SED):
         # mass fractional weight provided by neutrinoshere module
         self._mass_weight = kwargs[self.key('mass_weight')]
         
-        # viewing angle and opening angle 
-        self._phi = kwargs[self.key('phi')]
-        self._theta = kwargs[self.key('theta')]
-
         # Total weight function
-        # TYPE 1 == TIDAL TAIL SO GEOMETRIC FACTOR IS 1 - geometrical_weight
-        weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
-        weight = self._mass_weight * (1. - weight_goem)
-	print("weight 1", weight)
-         # Some temp vars for speed.
+        weight_goem = self.weight()
+        weight = self._mass_weight * weight_goem
+        
+        # Some temp vars for speed.
         cc = self.C_CONST
-
         zp1 = 1.0 + kwargs[self.key('redshift')]
         Azp1 = u.Angstrom.cgs.scale / zp1
         czp1 = cc / zp1
-
 
         seds = []
         rest_wavs_dict = {}
@@ -108,7 +117,6 @@ class Kasen1(SED):
             for w in rest_wavs:
                 # find index of closest wav
                 w_closest_i = np.abs(self._kasen_wavs-w).argmin()
-
                 sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
             
             # Calculate luminosity from sed
@@ -117,8 +125,7 @@ class Kasen1(SED):
 
             seds.append(sed)
             
-        #This line turns all the nans to 0s, which is kind of useless anyway
-        # because both 0s and nans break the code
+        #This line turns all the nans to 0s
         seds[-1][np.isnan(seds[-1])] = 0.0
         
 

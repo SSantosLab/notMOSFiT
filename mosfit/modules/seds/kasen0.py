@@ -39,7 +39,22 @@ class Kasen0(SED):
         self._dir_path = '/data/des51.b/data/kamile/'
         self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
-#	print("kasen wavs", self._kasen_wavs)
+
+
+    def weight(self, **kwargs):
+        # viewing angle and opening angle 
+        self._phi = kwargs[self.key('phi')] # half opening
+        self._theta = kwargs[self.key('theta')] # viewing
+        if self._phi + self._theta > np.pi/2.: 
+            x = ( (np.sin(self._phi)**2. - np.cos(self._theta)**2.)**.5/
+                np.sin(self._theta) )
+        else:
+            x = 0 
+
+        weight0 = ( (np.pi*(np.sin(self._phi)**2.)*(np.cos(self._theta)) + 
+            2*(1-np.cos(self._theta))*(np.arcsin(x) - x*(1 - x**2.)**.5))/np.pi )
+        return weight0
+
     def process(self, **kwargs):
         kwargs = self.prepare_input(self.key('luminosities'), **kwargs)
         self._luminosities = kwargs[self.key('luminosities')]
@@ -56,22 +71,16 @@ class Kasen0(SED):
         # mass fractional weight provided by neutrinoshere module
         self._mass_weight = kwargs[self.key('mass_weight')]
         
-        # viewing angle and opening angle 
-        self._phi = kwargs[self.key('phi')]
-        self._theta = kwargs[self.key('theta')]
-
         # Total weight function
         # TYPE 0 == SHOCK HEATED SO GEOMETRIC FACTOR IS JUST FOR CONE
-        weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
+        weight_goem = self.weight()
         weight = self._mass_weight * weight_goem
-        print("weight", weight)
-	# Some temp vars for speed.
-        cc = self.C_CONST
 
+       # Some temp vars for speed.
+        cc = self.C_CONST
         zp1 = 1.0 + kwargs[self.key('redshift')]
         Azp1 = u.Angstrom.cgs.scale / zp1
         czp1 = cc / zp1
-
 
         seds = []
         rest_wavs_dict = {}
@@ -87,7 +96,6 @@ class Kasen0(SED):
             fname = 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-2.0.p'
 
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, fname) , "rb" ))
-	print(fname)
         # For each time (luminosities as proxy)
         for li, lum in enumerate(self._luminosities):
             bi = self._band_indices[li]
@@ -100,28 +108,21 @@ class Kasen0(SED):
 
             # Find corresponding closest time
             t_closest_i = (np.abs(self._kasen_times-self._my_times[li])).argmin()
-	    # Evaluate the SED at the rest frame wavelengths 
+            # Evaluate the SED at the rest frame wavelengths 
             sed = np.array([])
             for w in rest_wavs:
-	        # find index of closest wav
+            # find index of closest wav
                 w_closest_i = np.abs(self._kasen_wavs-w).argmin()
-       #         if li < 10:
-       #             print("wav", w)
-#		    print("t_closest_i", t_closest_i)
-#                    print("val", kasen_seds['SEDs'][t_closest_i])
-     
-   	        sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
+                sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
             
             # Calculate luminosity from sed
             L_t = np.trapz(kasen_seds['SEDs'][t_closest_i], x=self._kasen_wavs)
-	    self._luminosities[li] = self._luminosities[li] +  L_t
+            self._luminosities[li] = self._luminosities[li] +  L_t
 
             seds.append(sed)
             
-        #This line turns all the nans to 0s, which is kind of useless anyway
-        # because both 0s and nans break the code
+        #This line turns all the nans to 0s
         seds[-1][np.isnan(seds[-1])] = 0.0
         
-
         seds = self.add_to_existing_seds(seds, **kwargs)
-	return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,'luminosities':self._luminosities }
+    return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,'luminosities':self._luminosities }
