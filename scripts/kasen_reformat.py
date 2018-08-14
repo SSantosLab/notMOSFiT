@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import bisect
 import h5py
 import pickle
-from scipy.constants import h,k,c
 #%matplotlib inline
 
 '''
     Reformat Kasen SEDs 
+    Units: lam: cm, Llam, ergs/s/cm because CGS UNITS OMG :(
 
 '''
 
@@ -20,6 +20,8 @@ vk_s = np.array(['0.03', '0.05', '0.10', '0.20', '0.30'])
 Xlan = np.array([1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-9])
 Xlan_s = np.array(['1e-1', '1e-2', '1e-3', '1e-4', '1e-5', '1e-9'])
 
+c = 2.99e10 # a units thing - look at Kasen's readmodel.py
+
 open_path = '../../Kasen_Kilonova_Models_2017/systematic_kilonova_model_grid/'
 save_path = '/data/des51.b/data/kamile/kasen_seds/'
 
@@ -30,14 +32,18 @@ fin    = h5py.File(fname,'r')
 
 # frequency in Hz
 nu    = np.array(fin['nu'],dtype='d')
-lam = c/nu*1e10 # in angstroms
+lam = c/nu # *  1e8 * 1e-8 # 1e8 convert to angs, 1e-8 for cm but ofc they cancel
+print(lam)
 print("pickling wavelength array")
 pickle.dump(np.flip(lam, 0), open(save_path + "wavelength_angstroms.p", "wb" ))
 # array of time in seconds -> convert to days
 # throw out negative values and things > 14.0
 times = np.array(fin['time'])
 times = times/3600.0/24.0
-times = times[(times >= 0.0) & (times <= 14.0)]
+
+min_ind  = np.argmax(times>=0.0)
+max_ind = np.argmin(times<=14.0)
+times = times[min_ind:max_ind]
 print("pickling times array")
 pickle.dump(times, open(save_path + "times_days.p", "wb"))
 
@@ -50,9 +56,9 @@ for mi, m in enumerate(mass_s):
             # -----------------------------------------------------------------
             fname = open_path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.h5'
            
-	    print(fname)
-	    if fname == open_path + 'knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-1.0.h5':
-		continue
+            print(fname)
+            if fname == open_path + 'knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-1.0.h5':
+                continue
             fin    = h5py.File(fname,'r')
     
             data = {'mass': mass[mi],
@@ -69,16 +75,16 @@ for mi, m in enumerate(mass_s):
 
             # specific luminosity (ergs/s/Hz) 
             # this is a 2D array, Lnu[times][nu]
-            Lnu_all   = np.array(fin['Lnu'],dtype='d')
+            Lnu_all   = np.array(fin['Lnu'],dtype='d')[min_ind:max_ind]
             for t in times:
                 # index corresponding to t
-                it = bisect.bisect(times,t)
+                it = bisect.bisect(times,t)-1
                 # spectrum at this epoch
                 Lnu = Lnu_all[it,:]
-	 	# Unit correction
-		Llam = Lnu*nu**2.0/c/1e8
-                
+                # Unit correction
+                Llam = Lnu*nu**2.0/c/ 1e8 / 1e-8 #for angs, then cm                 
                 data['SEDs'].append(np.flip(Llam, 0))
             print("# SEDs:" + str(len(data['SEDs'])))
             pickle.dump(data, open(save_path + 'knova_d1_n10_m' + m + '_vk' + v + '_fd1.0_Xlan' + x + '.0.p', "wb" ))
+            fin.close()
             

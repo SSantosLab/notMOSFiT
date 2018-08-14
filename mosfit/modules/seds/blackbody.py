@@ -74,4 +74,4 @@ class Blackbody(SED):
 
         seds = self.add_to_existing_seds(seds, **kwargs)
 
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds}
+        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds, 'rest_wavs': rest_wavs}

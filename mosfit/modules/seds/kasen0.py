@@ -39,13 +39,11 @@ class Kasen0(SED):
         self._dir_path = '/data/des51.b/data/kamile/'
         self._kasen_wavs = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/wavelength_angstroms.p'), "rb"))
         self._kasen_times = pickle.load( open(os.path.join(self._dir_path, 'kasen_seds/times_days.p'), "rb"))
-
-
+#	print("kasen wavs", self._kasen_wavs)
     def process(self, **kwargs):
         kwargs = self.prepare_input(self.key('luminosities'), **kwargs)
         self._luminosities = kwargs[self.key('luminosities')]
-        self._times = kwargs[self.key('rest_times')]
-    
+        self._my_times = kwargs[self.key('rest_times')]
         self._band_indices = kwargs['all_band_indices']
         self._frequencies = kwargs['all_frequencies']
 
@@ -66,8 +64,8 @@ class Kasen0(SED):
         # TYPE 0 == SHOCK HEATED SO GEOMETRIC FACTOR IS JUST FOR CONE
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * weight_goem
-
-        # Some temp vars for speed.
+        print("weight", weight)
+	# Some temp vars for speed.
         cc = self.C_CONST
 
         zp1 = 1.0 + kwargs[self.key('redshift')]
@@ -89,33 +87,34 @@ class Kasen0(SED):
             fname = 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-2.0.p'
 
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, fname) , "rb" ))
-
+	print(fname)
         # For each time (luminosities as proxy)
         for li, lum in enumerate(self._luminosities):
             bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1 * 1e8)
-             # bi, self._sample_wavelengths[bi] * 10.)
+                    bi, self._sample_wavelengths[bi] * Azp1)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[li]])
-       # print("rest_wavs", rest_wavs)
+
             # Find corresponding closest time
-
-            t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
-
-            # Evaluate the SED at the rest frame wavelengths 
+            t_closest_i = (np.abs(self._kasen_times-self._my_times[li])).argmin()
+	    # Evaluate the SED at the rest frame wavelengths 
             sed = np.array([])
             for w in rest_wavs:
-                # find index of closest wav
+	        # find index of closest wav
                 w_closest_i = np.abs(self._kasen_wavs-w).argmin()
-
-                sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
+       #         if li < 10:
+       #             print("wav", w)
+#		    print("t_closest_i", t_closest_i)
+#                    print("val", kasen_seds['SEDs'][t_closest_i])
+     
+   	        sed = np.append(sed, weight * kasen_seds['SEDs'][t_closest_i][w_closest_i] )
             
             # Calculate luminosity from sed
             L_t = np.trapz(kasen_seds['SEDs'][t_closest_i], x=self._kasen_wavs)
-            self._luminosities[li] = self._luminosities[li] +  L_t
+	    self._luminosities[li] = self._luminosities[li] +  L_t
 
             seds.append(sed)
             
@@ -125,5 +124,4 @@ class Kasen0(SED):
         
 
         seds = self.add_to_existing_seds(seds, **kwargs)
-
-        return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,'luminosities':self._luminosities }
+	return {'sample_wavelengths': self._sample_wavelengths, 'seds': seds,'luminosities':self._luminosities }

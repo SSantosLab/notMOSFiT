@@ -379,7 +379,6 @@ class Photometry(Module):
         self._dist_const = FOUR_PI * (kwargs['lumdist'] * MPC_CGS) ** 2
         self._ldist_const = np.log10(self._dist_const)
         self._luminosities = kwargs[self.key('luminosities')]
-        print("photo lums", self._luminosities)
 	self._frequencies = kwargs['all_frequencies']
         self._zps = kwargs.get('all_zeropoints', np.zeros_like(
             self._luminosities))
@@ -388,8 +387,6 @@ class Photometry(Module):
         offsets = np.zeros_like(self._luminosities)
         model_observations = np.zeros_like(self._luminosities)
         
-	print("len lums", len(self._luminosities))
-	print("len seds", len(kwargs['seds']))
 	for li, lum in enumerate(self._luminosities):
             bi = self._band_indices[li]
             if bi >= 0:

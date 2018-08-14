@@ -66,7 +66,7 @@ class Kasen1(SED):
         # TYPE 1 == TIDAL TAIL SO GEOMETRIC FACTOR IS 1 - geometrical_weight
         weight_goem = 2*np.cos(self._theta)*(1. - np.cos(self._phi))
         weight = self._mass_weight * (1. - weight_goem)
-
+	print("weight 1", weight)
          # Some temp vars for speed.
         cc = self.C_CONST
 
@@ -95,14 +95,12 @@ class Kasen1(SED):
             bi = self._band_indices[li]
             if bi >= 0:
                 rest_wavs = rest_wavs_dict.setdefault(
-                    bi, self._sample_wavelengths[bi] * Azp1 * 1e8)
-             # bi, self._sample_wavelengths[bi] * 10.)
+                    bi, self._sample_wavelengths[bi] * Azp1)
             else:
                 rest_wavs = np.array(  # noqa: F841
                     [czp1 / self._frequencies[li]])
-       # print("rest_wavs", rest_wavs)
-            # Find corresponding closest time
 
+            # Find corresponding closest time
             t_closest_i = (np.abs(self._kasen_times-self._times[li])).argmin()
 
             # Evaluate the SED at the rest frame wavelengths 

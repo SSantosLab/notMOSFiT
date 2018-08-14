@@ -154,9 +154,7 @@
             "vk1":"vk",
             "xlan1":"xlan",
             "Msph1":"Msph",
-            "mass_weight1":"mass_weight",
-	    "Msph":"Msph1",
-	    "vk":"vk1"
+            "mass_weight1":"mass_weight"
         }
     },
     "photometry":{

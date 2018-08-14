@@ -211,9 +211,9 @@ class Neutrinosphere1(Energetic):
         self._phi     = kwargs[self.key('phi')]
 
         #mass fractions (or volume fractions, same thing)
-        shock_mass_fraction = ( 0.5 * ( (2+np.cos(shock_opening_ang) ) *
-            ( 1 - np.cos(shock_opening_ang) )**2 + 
-            ( np.sin(shock_opening_ang)**2 ) * np.cos(shock_opening_ang) ) )
+        shock_mass_fraction = ( 0.5 * ( (2+np.cos(self._phi) ) *
+            ( 1 - np.cos(self._phi) )**2 + 
+            ( np.sin(self._phi)**2 ) * np.cos(self._phi) ) )
 
         # THIS SECTION SPECIFIC TO TYPE 1 EJECTA
         # ---------------------------------------------------------------------
@@ -244,10 +244,13 @@ class Neutrinosphere1(Energetic):
             lower_mass) & (self.LRDATA[:,2] <= upper_mass))]
         
         #interpolate grid for Xla. If outside grid, it'll return Xla=0
-        Xla = interpolate.griddata(( lrdatatemp[:,0], 
+        # Multiplying by 1. converts np.array of one val to float. Infuriating
+        # but... fine. 
+
+	Xla = interpolate.griddata(( lrdatatemp[:,0], 
             lrdatatemp[:,1],lrdatatemp[:,2],lrdatatemp[:,3]), 
             lrdatatemp[:,4], (Ye, entropy, Msph, self._vcoast), 
-            method='linear',fill_value=0)
+            method='linear',fill_value=0) * 1.
 
         #exclude ones out of range of Kasen's SED grid
         if Xla>.1: Xla=.1
