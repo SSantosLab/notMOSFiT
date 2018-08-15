@@ -46,37 +46,37 @@
     },
     "theta":{
 	   "kind":"parameter",
-	   "value":0.78,
+	   "value":0.6981317008,
 	   "class":"parameter",
 	   "latex":"\\theta"
     },
     "phi":{
         "kind":"parameter",
-        "value":0.78,
+        "value":1.0471975512,
         "class":"parameter",
         "latex":"\\phi"
     },
     "vcoast1":{
         "kind":"parameter",
-        "value":0.1,
+        "value":0.24,
         "class":"parameter",
         "latex":"v_c"
     },
     "Msph1":{
         "kind":"parameter",
-        "value":0.01,
+        "value":0.1,
         "class":"parameter",
         "latex":"m"
     },
     "vcoast0":{
         "kind":"parameter",
-        "value":0.1,
+        "value":0.36,
         "class":"parameter",
         "latex":"v_c"
     },
     "Msph0":{
         "kind":"parameter",
-        "value":0.01,
+        "value":0.075,
         "class":"parameter",
         "latex":"m"
     },

@@ -79,7 +79,6 @@ class Kasen1(SED):
         self._theta = kwargs[self.key('theta')] # viewing
         weight_goem = self.weight(self._phi, self._theta)
         weight = self._mass_weight * weight_goem
-        print("weight1", weight)
  
         # Some temp vars for speed.
         cc = self.C_CONST
@@ -99,7 +98,7 @@ class Kasen1(SED):
         fname = 'kasen_seds/knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p'
         if fname == 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-1.0.p':
             fname = 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-2.0.p'
-	print("1", fname)
+	#print("1", fname)
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, fname) , "rb" ))
 
         # For each time (luminosities as proxy)

@@ -1,20 +1,18 @@
 {
     "nhhost":{
-        "min_value":1.0e16,
-        "max_value":1.0e23,
-        "log":true
+        "value":7e20
     },
     "texplosion":{
-        "value": -0.5
+        "value": -0.474059
     },
     "theta":{
         "min_value":0.0,
-        "max_value":1.5707,
+        "max_value":1.57079632679,
         "log":false
     },
     "phi":{
         "min_value":0.0,
-        "max_value":1.5707,
+        "max_value":1.57079632679,
         "log":false
     },
     "vcoast1":{
