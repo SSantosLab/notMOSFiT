@@ -51,6 +51,7 @@ class Kasen0(SED):
 
         weight0 = ( (np.pi*(np.sin(phi)**2.)*(np.cos(theta)) + 
             2*(1-np.cos(theta))*(np.arcsin(x) - x*(1 - x**2.)**.5))/np.pi )
+        print("weight0" , weight0)
         return weight0
 
     def process(self, **kwargs):
