@@ -1,0 +1,40 @@
+{
+    "nhhost":{
+        "min_value":1.0e16,
+        "max_value":1.0e23,
+        "log":true
+    },
+    "texplosion":{
+        "value": -0.5
+    },
+    "theta":{
+        "min_value":0.0,
+        "max_value":1.5707,
+        "log":false
+    },
+    "phi":{
+        "min_value":0.0,
+        "max_value":1.5707,
+        "log":false
+    },
+    "vcoast1":{
+        "min_value":0.03,
+        "max_value":0.3,
+        "log":false
+    },
+    "mejecta1":{
+        "min_value":0.001,
+        "max_value":0.1,
+        "log":false   
+    },
+    "vcoast0":{
+        "min_value":0.03,
+        "max_value":0.3,
+        "log":false
+    },
+    "mejecta0":{
+        "min_value":0.001,
+        "max_value":0.1,
+        "log":false   
+    }  
+}

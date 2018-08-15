@@ -1,0 +1,172 @@
+{
+    "@references":[
+        {
+            "bibcode": "2017arXiv170708132V"
+        },
+        {
+            "bibcode": "2017arXiv171011576V"
+        }
+    ],
+   "ebv":{
+        "kind":"parameter",
+        "value":0.0,
+        "class":"parameter",
+        "inputs":[
+            "transient"
+        ],
+        "latex":"E({\\rm B} - {\\rm V})"
+    },
+    "nhhost":{
+        "kind":"parameter",
+        "value":1.0e14,
+        "class":"parameter",
+        "latex":"n_{\\rm H,host}",
+        "derived_keys":"avhost"
+    },
+    "redshift":{
+        "kind":"parameter",
+        "value":0.009727,
+        "class":"parameter",
+        "latex":"z"
+    },
+    "lumdist":{
+        "kind":"parameter",
+        "value":43.36,
+        "class":"parameter",
+        "latex":"d"
+    },
+    "texplosion":{
+        "kind":"parameter",
+        "value":0.0,
+        "class":"parameter",
+        "latex":"t_{\\rm exp}\\,{\\rm (days)}",
+        "requests":{
+            "min_times": "transient"
+        }
+    },
+    "theta":{
+	   "kind":"parameter",
+	   "value":0.78,
+	   "class":"parameter",
+	   "latex":"\\theta"
+    },
+    "phi":{
+        "kind":"parameter",
+        "value":0.78,
+        "class":"parameter",
+        "latex":"\\phi"
+    },
+    "vcoast1":{
+        "kind":"parameter",
+        "value":0.1,
+        "class":"parameter",
+        "latex":"v_c"
+    },
+    "mejecta1":{
+        "kind":"parameter",
+        "value":0.01,
+        "class":"parameter",
+        "latex":"m"
+    },
+    "vcoast0":{
+        "kind":"parameter",
+        "value":0.1,
+        "class":"parameter",
+        "latex":"v_c"
+    },
+    "mejecta0":{
+        "kind":"parameter",
+        "value":0.01,
+        "class":"parameter",
+        "latex":"m"
+    },
+    "fakelum":{
+        "kind":"engine",
+        "inputs": "densetimes"
+    },
+    "neutrinosphere0":{
+        "kind": "energetic",
+        "inputs": [
+            "mejecta0",
+            "vcoast0",
+            "phi"
+        ],
+        "replacements": {
+            "mejecta": "mejecta0",
+            "vcoast":"vcoast0",
+            "Msph": "Msph0",
+            "vk":"vk0",
+            "xlan":"xlan0"
+        }
+    },
+    "kasen0":{
+        "kind":"sed",
+        "inputs":[
+	        "neutrinosphere0",
+            "fakelum",
+	        "densetimes",
+            "texplosion",
+            "redshift",
+            "theta",
+            "phi"
+        ],
+        "requests":{
+            "band_wave_ranges": "photometry"
+        },
+        "replacements":{
+            "vk0":"vk",
+            "xlan0":"xlan",
+            "mass_weight0":"mass_weight",
+            "Msph0": "Msph"
+        }
+    },
+    "neutrinosphere1":{
+        "kind": "energetic",
+        "inputs": [
+            "mejecta1",
+            "vcoast1",
+            "phi"
+        ],
+        "replacements": {
+            "mejecta": "mejecta1",
+            "vcoast":"vcoast1",
+            "Msph": "Msph1",
+            "vk":"vk1",
+            "xlan":"xlan1"
+        }
+    },
+    "kasen1":{
+        "kind":"sed",
+        "inputs":[
+	   "neutrinosphere1",
+      	   "fakelum",
+	   "densetimes",
+            "texplosion",
+            "redshift",
+            "theta",
+            "phi",
+            "kasen0"
+        ],
+        "requests":{
+            "band_wave_ranges": "photometry"
+        },
+        "replacements":{
+            "vk1":"vk",
+            "xlan1":"xlan",
+            "Msph1":"Msph",
+            "mass_weight1":"mass_weight"
+        }
+    },
+    "photometry":{
+        "kind":"observable",
+        "supports":[
+            "ultraviolet",
+	         "optical",
+            "infrared"
+        ],
+        "inputs":[
+            "kasen1",
+            "lumdist"
+        ]
+}
+    }
