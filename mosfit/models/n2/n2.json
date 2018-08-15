@@ -62,7 +62,7 @@
         "class":"parameter",
         "latex":"v_c"
     },
-    "mejecta1":{
+    "Msph1":{
         "kind":"parameter",
         "value":0.01,
         "class":"parameter",
@@ -74,7 +74,7 @@
         "class":"parameter",
         "latex":"v_c"
     },
-    "mejecta0":{
+    "Msph0":{
         "kind":"parameter",
         "value":0.01,
         "class":"parameter",
@@ -87,12 +87,12 @@
     "neutrinosphere0":{
         "kind": "energetic",
         "inputs": [
-            "mejecta0",
+            "Msph0",
             "vcoast0",
             "phi"
         ],
         "replacements": {
-            "mejecta": "mejecta0",
+            "Msph": "Msph0",
             "vcoast":"vcoast0",
             "Msph": "Msph0",
             "vk":"vk0",
@@ -123,12 +123,12 @@
     "neutrinosphere1":{
         "kind": "energetic",
         "inputs": [
-            "mejecta1",
+            "Msph1",
             "vcoast1",
             "phi"
         ],
         "replacements": {
-            "mejecta": "mejecta1",
+            "Msph": "Msph1",
             "vcoast":"vcoast1",
             "Msph": "Msph1",
             "vk":"vk1",

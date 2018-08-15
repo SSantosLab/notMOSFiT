@@ -6,21 +6,22 @@
         "value": -0.5
     },
     "theta":{
-        "value":1.5707
+        "value":0.69
     },
     "phi":{
-        "value":1.5707
+        "value":1.04
     },
     "vcoast1":{
-        "value":0.15
+        "value":0.20
     },
-    "mejecta1":{
-        "value":0.04
+    "Msph1":{
+        "value":0.1
     },
     "vcoast0":{
-        "value":0.3
+        "value":0.12
     },
-    "mejecta0":{
-        "value":0.025
-    }  
+    "Msph0":{
+        "value":0.075
+    }
 }
+ 

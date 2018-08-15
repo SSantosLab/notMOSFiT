@@ -193,7 +193,7 @@ class Neutrinosphere1(Energetic):
         mass_weight.
 
         FREE PARAMETERS
-        mejecta = ejecta mass [M_sun] 
+        Msph = Spherical ejecta mass equivalent [M_sun] 
         vcoast = coasting velocity [c]
         phi = opening angle [radians]
 
@@ -206,7 +206,7 @@ class Neutrinosphere1(Energetic):
 
         '''
         # Free parameters
-        self._mejecta = kwargs[self.key('mejecta')]
+        self._Msph = kwargs[self.key('Msph')]
         self._vcoast  = kwargs[self.key('vcoast')]
         self._phi     = kwargs[self.key('phi')]
 
@@ -225,7 +225,6 @@ class Neutrinosphere1(Energetic):
             Ye = self.getYe(self._vcoast,0,1.0e-6)
         # ---------------------------------------------------------------------
 
-        Msph = self._mejecta / mass_weight
         v_k  = self._vcoast * self.V_FACTOR
         
         #cut out unneeded masses, Ye's from Xla table
@@ -257,5 +256,5 @@ class Neutrinosphere1(Energetic):
         if Xla<1.0e-9: Xla=1.0e-9
         
         #spherical mass [Msun], kinetic velocity [c], lanthanide mass fraction, SED mass_weight
-        return {'Msph': Msph, 'vk': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
+        return {'vk': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
 

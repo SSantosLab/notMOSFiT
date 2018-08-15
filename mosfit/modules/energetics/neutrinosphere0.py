@@ -195,7 +195,7 @@ class Neutrinosphere0(Energetic):
         mass_weight.
 
         FREE PARAMETERS
-        mejecta = ejecta mass [M_sun] 
+        Msph = spherical ejecta mass equivalent [M_sun] 
         vcoast = coasting velocity [c]
         phi = opening angle [radians]
 
@@ -208,7 +208,7 @@ class Neutrinosphere0(Energetic):
 
         '''
         # Free parameters
-        self._mejecta = kwargs[self.key('mejecta')]
+        self._Msph = kwargs[self.key('Msph')]
         self._vcoast  = kwargs[self.key('vcoast')]
         self._phi     = kwargs[self.key('phi')]
 
@@ -226,7 +226,6 @@ class Neutrinosphere0(Energetic):
             Ye = self.getYe(self._vcoast,2,1.0e-6)
         # ---------------------------------------------------------------------
 
-        Msph = self._mejecta / mass_weight
         v_k  = self._vcoast * self.V_FACTOR
         
         #cut out unneeded masses, Ye's from Xla table
@@ -244,8 +243,8 @@ class Neutrinosphere0(Energetic):
             lower_mass) & (self.LRDATA[:,2] <= upper_mass))]
         
         # Interpolate grid for Xla. If outside grid, it'll return Xla=0
-	# Multiplying by 1. converts np.array of one val to float. Infuriating
-	# but... fine. 
+	    # Multiplying by 1. converts np.array of one val to float. Infuriating
+	    # but... fine. 
         Xla = interpolate.griddata(( lrdatatemp[:,0], 
             lrdatatemp[:,1],lrdatatemp[:,2],lrdatatemp[:,3]), 
             lrdatatemp[:,4], (Ye, entropy, Msph, self._vcoast), 
@@ -257,6 +256,6 @@ class Neutrinosphere0(Energetic):
         if Xla<1.0e-9: Xla=1.0e-9
 	        
         #spherical mass [Msun], kinetic velocity [c], lanthanide mass fraction, SED mass_weight
-        return {'Msph': Msph, 'vk': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
+        return {'vk': v_k, 'xlan': Xla, 'mass_weight': mass_weight}
 
 
