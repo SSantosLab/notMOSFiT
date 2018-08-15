@@ -66,8 +66,10 @@ class Kasen1(SED):
         # Physical parameters from Kasen simulations, provided by
         # neutrinosphere module (thank you, Jessica Metzger)
         self._vk = kwargs[self.key('vk')]
-        self._xlan = kwargs[self.key('xlan')]
-        self._mass = kwargs[self.key('Msph')]
+        #self._xlan = kwargs[self.key('xlan')]
+        self._xlan = 1e-2
+
+	self._mass = kwargs[self.key('Msph')]
         
         # mass fractional weight provided by neutrinoshere module
         self._mass_weight = kwargs[self.key('mass_weight')]
@@ -77,7 +79,8 @@ class Kasen1(SED):
         self._theta = kwargs[self.key('theta')] # viewing
         weight_goem = self.weight(self._phi, self._theta)
         weight = self._mass_weight * weight_goem
-        
+        print("weight1", weight)
+ 
         # Some temp vars for speed.
         cc = self.C_CONST
         zp1 = 1.0 + kwargs[self.key('redshift')]
@@ -96,7 +99,7 @@ class Kasen1(SED):
         fname = 'kasen_seds/knova_d1_n10_m' + m_closest + '_vk' + v_closest + '_fd1.0_Xlan' + x_closest + '.0.p'
         if fname == 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-1.0.p':
             fname = 'kasen_seds/knova_d1_n10_m0.1_vk0.30_fd1.0_Xlan1e-2.0.p'
-
+	print("1", fname)
         kasen_seds = pickle.load( open(os.path.join(self._dir_path, fname) , "rb" ))
 
         # For each time (luminosities as proxy)

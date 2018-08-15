@@ -231,11 +231,11 @@ class Neutrinosphere1(Energetic):
         lower_mass = 0
         upper_mass = 1
         
-        if Msph > 0.001:
-            try: lower_mass = self.LR_MASSES[np.where(self.LR_MASSES < Msph)[0][-1]]
+        if self._Msph > 0.001:
+            try: lower_mass = self.LR_MASSES[np.where(self.LR_MASSES < self._Msph)[0][-1]]
             except IndexError: lower_mass = 0
-        if Msph < 0.1:
-            try: upper_mass = self.LR_MASSES[np.where(self.LR_MASSES > Msph)[0][0]]
+        if self._Msph < 0.1:
+            try: upper_mass = self.LR_MASSES[np.where(self.LR_MASSES > self._Msph)[0][0]]
             except IndexError: upper_mass = 1
 
         lrdatatemp = self.LRDATA[np.where((self.LRDATA[:,0] >= Ye-.04) 
@@ -248,7 +248,7 @@ class Neutrinosphere1(Energetic):
 
 	Xla = interpolate.griddata(( lrdatatemp[:,0], 
             lrdatatemp[:,1],lrdatatemp[:,2],lrdatatemp[:,3]), 
-            lrdatatemp[:,4], (Ye, entropy, Msph, self._vcoast), 
+            lrdatatemp[:,4], (Ye, entropy, self._Msph, self._vcoast), 
             method='linear',fill_value=0) * 1.
 
         #exclude ones out of range of Kasen's SED grid
